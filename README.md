@@ -1,17 +1,17 @@
-#Sloth Player
+# Sloth Player
 A music and silence player
 
-##Why?
+## Why?
 Don't you sometimes wish you could find the ideal balance between music and silence? This is exactly what Sloth Player has been created for. It is a jukebox where you can also configure the pause between the tracks.
 
-##Is it free and open source?
+## Is it free and open source?
 Yes, and open source too. The player is built on top of python, python-vlc and vlc, amongst other open source software. 
 
-##What can it do?
+## What can it do?
 Can play local files and Youtube in a random setting. You can configure how long you want the player to pause between two tracks.
 Supported formats: all formats supported by vlc (incl. mp3, aac, flac, wma)
 
-##How does it work?
+## How does it work?
 First, you need to edit the configuration file config.txt. The config file's format is hjson [https://hjson.org/]
 
 localMusicFolders: (path) local folders to be scanned
@@ -49,10 +49,10 @@ Example:
   "fileTypes": ["*.mp3", "*.wma", "*.flac", "*.aac", "*.ogg"]
   "interval": [4, 7]
 }
-```hjson
+```
 
-##Which platform?
+## Which platform?
 The code is a python code which is compatible with multiple platforms. However, I have only tested and compiled a binary version for Windows x64. Please let me know if you are able to run on MacOS/Linux and are interested in submitting a compiled version for those platforms.
 
-#Credits
+# Credits
 logo: http://pngimg.com/download/71212
