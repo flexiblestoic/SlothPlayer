@@ -2,7 +2,6 @@ import random, os, time, sys, vlc
 import msvcrt
 from pathlib import Path
 import hjson
-
 from bs4 import BeautifulSoup
 import requests
 
@@ -150,6 +149,7 @@ if __name__ == '__main__':
 
             if playlistData.get(song, None) != None: # attempts to find title for youtube songs
                 print("Playing:", playlistData[song], "Length:", "%02d:%02d" % (mm,ss))
+                print(song)
             else:
                 print("Playing:", song, "Length:", "%02d:%02d" % (mm,ss))
 
@@ -173,6 +173,8 @@ if __name__ == '__main__':
                 # print(state)
 
                 if state not in playing: # if the song is finished
+
+                    player.stop() #for safety, let's make sure to close the instance, to not have 2 running
 
                     songsPlayed += 1 # increase counter of songs played
 
