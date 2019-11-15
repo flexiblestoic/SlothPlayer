@@ -12,7 +12,7 @@ Can play local files and Youtube in a random setting. You can configure how long
 Supported formats: all formats supported by vlc (incl. mp3, aac, flac, wma)
 
 ## How does it work?
-First, you need to edit the configuration file config.txt. The config file's format is hjson [https://hjson.org/]
+First, you need to edit the configuration file config.txt. The config file's format is hjson https://hjson.org/
 
 localMusicFolders: (path) local folders to be scanned
 localMusicFoldersActive: (true/false) activate or not the local mode
@@ -28,7 +28,7 @@ interval: (integers) min and max number of minutes of silence between 2 tracks (
 
 Example: 
 
-```hjson
+```json
 {
   "localMusicFolders": [
     "C:\\music"
