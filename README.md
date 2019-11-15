@@ -28,7 +28,7 @@ interval: (integers) min and max number of minutes of silence between 2 tracks (
 
 Example: 
 
-```json
+```
 {
   "localMusicFolders": [
     "C:\\music"
