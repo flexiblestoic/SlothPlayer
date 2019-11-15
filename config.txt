@@ -1,0 +1,19 @@
+{
+  "localMusicFolders": [
+    "C:\\music"
+  ]
+
+  "localMusicFoldersActive": false
+
+  "youtubePlaylists": [
+    "https://www.youtube.com/playlist?list=PLo3pNg0eiPc-9livXsto4X1ROzJ3kGI-3"  #youhou
+    "https://www.youtube.com/playlist?list=PLd6-Jg5IeeosymMDHA5QhzA2CbelAGN6e"
+  ]
+
+  "youtubePlaylistsActive": true
+
+  "consecutiveReadings": 2
+
+  "fileTypes": ["*.mp3", "*.wma", "*.flac"]
+  "interval": [4, 7]
+}
