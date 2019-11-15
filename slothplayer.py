@@ -174,8 +174,6 @@ if __name__ == '__main__':
 
                 if state not in playing: # if the song is finished
 
-                    player.stop() #for safety, let's make sure to close the instance, to not have 2 running
-
                     songsPlayed += 1 # increase counter of songs played
 
                     if songsPlayed < consecutiveReadings:
