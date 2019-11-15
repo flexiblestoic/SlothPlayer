@@ -1,19 +1,20 @@
 {
   "localMusicFolders": [
     "C:\\music"
+    "D:\\mymusic"
   ]
 
   "localMusicFoldersActive": false
 
   "youtubePlaylists": [
-    "https://www.youtube.com/playlist?list=PLo3pNg0eiPc-9livXsto4X1ROzJ3kGI-3"  #youhou
-    "https://www.youtube.com/playlist?list=PLd6-Jg5IeeosymMDHA5QhzA2CbelAGN6e"
+    "https://www.youtube.com/playlist?list=PLo3pNg0eiPc-9livXsto4X1ROzJ3kGI-3"  # Quiet Songs Playlist 2020
+    "https://www.youtube.com/playlist?list=PLd6-Jg5IeeosymMDHA5QhzA2CbelAGN6e" # Accoustic
   ]
 
   "youtubePlaylistsActive": true
 
   "consecutiveReadings": 2
 
-  "fileTypes": ["*.mp3", "*.wma", "*.flac"]
+  "fileTypes": ["*.mp3", "*.wma", "*.flac", "*.aac", "*.ogg"]
   "interval": [4, 7]
 }
