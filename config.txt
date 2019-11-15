@@ -16,5 +16,6 @@
   "consecutiveReadings": 2
 
   "fileTypes": ["*.mp3", "*.wma", "*.flac", "*.aac", "*.ogg"]
+  
   "interval": [4, 7]
 }

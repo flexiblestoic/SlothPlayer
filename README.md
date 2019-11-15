@@ -47,6 +47,7 @@ Example:
   "consecutiveReadings": 2
 
   "fileTypes": ["*.mp3", "*.wma", "*.flac", "*.aac", "*.ogg"]
+  
   "interval": [4, 7]
 }
 ```
@@ -54,5 +55,5 @@ Example:
 ## Which platform?
 The code is a python code which is compatible with multiple platforms. However, I have only tested and compiled a binary version for Windows x64. Please let me know if you are able to run on MacOS/Linux and are interested in submitting a compiled version for those platforms.
 
-# Credits
+## Credits
 logo: http://pngimg.com/download/71212
