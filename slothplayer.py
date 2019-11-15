@@ -1,9 +1,101 @@
 import random, os, time, sys, vlc
-import msvcrt
 from pathlib import Path
 import hjson
 from bs4 import BeautifulSoup
 import requests
+
+# Windows
+if os.name == 'nt':
+    import msvcrt
+
+# Posix (Linux, OS X)
+else:
+    import sys
+    import termios
+    import atexit
+    from select import select
+
+
+class KBHit: #non blocking io from https://stackoverflow.com/questions/2408560/python-nonblocking-console-input
+
+    def __init__(self):
+        '''Creates a KBHit object that you can call to do various keyboard things.
+        '''
+
+        if os.name == 'nt':
+            pass
+
+        else:
+
+            # Save the terminal settings
+            self.fd = sys.stdin.fileno()
+            self.new_term = termios.tcgetattr(self.fd)
+            self.old_term = termios.tcgetattr(self.fd)
+
+            # New terminal setting unbuffered
+            self.new_term[3] = (self.new_term[3] & ~termios.ICANON & ~termios.ECHO)
+            termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.new_term)
+
+            # Support normal-terminal reset at exit
+            atexit.register(self.set_normal_term)
+
+
+    def set_normal_term(self):
+        ''' Resets to normal terminal.  On Windows this is a no-op.
+        '''
+
+        if os.name == 'nt':
+            pass
+
+        else:
+            termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.old_term)
+
+
+    def getch(self):
+        ''' Returns a keyboard character after kbhit() has been called.
+            Should not be called in the same program as getarrow().
+        '''
+
+        s = ''
+
+        if os.name == 'nt':
+            return msvcrt.getch().decode('utf-8')
+
+        else:
+            return sys.stdin.read(1)
+
+
+    def getarrow(self):
+        ''' Returns an arrow-key code after kbhit() has been called. Codes are
+        0 : up
+        1 : right
+        2 : down
+        3 : left
+        Should not be called in the same program as getch().
+        '''
+
+        if os.name == 'nt':
+            msvcrt.getch() # skip 0xE0
+            c = msvcrt.getch()
+            vals = [72, 77, 80, 75]
+
+        else:
+            c = sys.stdin.read(3)[2]
+            vals = [65, 67, 66, 68]
+
+        return vals.index(ord(c.decode('utf-8')))
+
+
+    def kbhit(self):
+        ''' Returns True if keyboard character was hit, False otherwise.
+        '''
+        if os.name == 'nt':
+            return msvcrt.kbhit()
+
+        else:
+            dr,dw,de = select([sys.stdin], [], [], 0)
+            return dr != []
+
 
 
 def horizontalLine():
@@ -106,6 +198,8 @@ if __name__ == '__main__':
 
         songsPlayed = 0
 
+        kb = KBHit()
+
         while True: # main loop (each song)
 
             horizontalLine()
@@ -159,8 +253,8 @@ if __name__ == '__main__':
 
             while True: # loop while playing, waiting for user input
                     
-                if msvcrt.kbhit():
-                    if msvcrt.getch() == b'n':
+                if kb.kbhit():
+                    if kb.getch() == 'n':
                         print("Next song...")
                         player.stop()
                         break  # finishing the loop
@@ -188,8 +282,8 @@ if __name__ == '__main__':
 
 
                         for i in range(sleepInterval*60,0,-1):
-                            if msvcrt.kbhit():
-                                if msvcrt.getch() == b'n':
+                            if kb.kbhit():
+                                if kb.getch() == b'n':
                                     print("Skip pause...")
                                     break  # finishing the loop
 
@@ -211,8 +305,8 @@ if __name__ == '__main__':
                         break
 
                 time.sleep(1)
-                
 
+        kb.set_normal_term()
 
     except BaseException: # to keep the command window open upon exit (in case of error for example)
         import sys
