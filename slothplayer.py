@@ -120,11 +120,25 @@ def getPlaylistLinks(url):
     return output, playlistData
 
 
-def loadConfig():
-    with open('config.txt', encoding='utf-8') as config_file:
+def loadConfig(file):
+    with open(file, encoding='utf-8') as config_file:
         data = hjson.load(config_file)
-    return data
+    
+    config = Config(data)
 
+    return config
+
+
+class Config():
+
+  def __init__(self, data):
+    self.localMusicFolders = data['localMusicFolders']
+    self.localMusicFoldersActive = data['localMusicFoldersActive']
+    self.youtubePlaylists = data['youtubePlaylists']
+    self.youtubePlaylistsActive = data['youtubePlaylistsActive']
+    self.consecutiveReadings = data['consecutiveReadings']
+    self.fileTypes = data['fileTypes']
+    self.interval = data['interval']
 
 if __name__ == '__main__':
     try:
@@ -148,24 +162,18 @@ if __name__ == '__main__':
         print("Loading Config...")
 
         try:
-            data = loadConfig()
+            config = loadConfig("config.txt")
         except:
             print("The configuration couldn't be loaded, please check the syntax of config.txt")
             sys.exit(1)
 
-        localMusicFolders = data['localMusicFolders']
-        localMusicFoldersActive = data['localMusicFoldersActive']
-        youtubePlaylists = data['youtubePlaylists']
-        youtubePlaylistsActive = data['youtubePlaylistsActive']
-        consecutiveReadings = data['consecutiveReadings']
-        fileTypes = data['fileTypes']
-        interval = data['interval']
 
-        print(f"Local Folders: {localMusicFolders}")
-        print(f"Active: {localMusicFoldersActive}")
-        print(f"Youtube Playlists: {youtubePlaylists}")
-        print(f"Active: {youtubePlaylistsActive}")
-        print(f"Silence Interval: {interval}")
+
+        print(f"Local Folders: {config.localMusicFolders}")
+        print(f"Active: {config.localMusicFoldersActive}")
+        print(f"Youtube Playlists: {config.youtubePlaylists}")
+        print(f"Active: {config.youtubePlaylistsActive}")
+        print(f"Silence Interval: {config.interval}")
 
         instance=vlc.Instance("--novideo", "--verbose=0")
         player=instance.media_player_new()
@@ -176,8 +184,8 @@ if __name__ == '__main__':
 
         # populate soundfiles and playlists
         soundfiles = []
-        if localMusicFoldersActive:
-            for localMusicFolder in localMusicFolders:
+        if config.localMusicFoldersActive:
+            for localMusicFolder in config.localMusicFolders:
                 for fileType in fileTypes:
                     for filename in Path(localMusicFolder).rglob(fileType):
                         soundfiles.append(str(filename))
@@ -185,8 +193,8 @@ if __name__ == '__main__':
 
         playlistData = {}
 
-        if youtubePlaylistsActive:
-            for youtubePlaylist in youtubePlaylists:
+        if config.youtubePlaylistsActive:
+            for youtubePlaylist in config.youtubePlaylists:
 
                 youtubePlaylistLinks, playlistDataTemp = getPlaylistLinks(youtubePlaylist)
 
@@ -279,7 +287,7 @@ if __name__ == '__main__':
                         break
                     else:
                         #wait the required sleep interval
-                        sleepInterval = random.randint(interval[0],interval[1])
+                        sleepInterval = random.randint(config.interval[0],config.interval[1])
 
                         print(f'Sleeping for {sleepInterval} minutes')
                         print("Press (n) to skip pause")
@@ -314,9 +322,9 @@ if __name__ == '__main__':
 
     except BaseException: # to keep the command window open upon exit (in case of error for example)
         import sys
-        #print(sys.exc_info()[0])
+        print(sys.exc_info()[0])
         import traceback
-        #print(traceback.format_exc())
+        print(traceback.format_exc())
     finally:
         print("Press Enter to continue ...")
         input()
