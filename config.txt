@@ -15,7 +15,9 @@
 
   "consecutiveReadings": 2
 
-  "fileTypes": ["*.mp3", "*.wma", "*.flac", "*.aac", "*.ogg"]
-  
+  "maxSongPlayTime": 10
+
   "interval": [4, 7]
+
+  "fileTypes": ["*.mp3", "*.wma", "*.flac", "*.aac", "*.ogg"]
 }

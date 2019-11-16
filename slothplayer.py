@@ -147,7 +147,11 @@ if __name__ == '__main__':
         horizontalLine()
         print("Loading Config...")
 
-        data = loadConfig()
+        try:
+            data = loadConfig()
+        except:
+            print("The configuration couldn't be loaded, please check the syntax of config.txt")
+            sys.exit(1)
 
         localMusicFolders = data['localMusicFolders']
         localMusicFoldersActive = data['localMusicFoldersActive']
@@ -310,9 +314,9 @@ if __name__ == '__main__':
 
     except BaseException: # to keep the command window open upon exit (in case of error for example)
         import sys
-        print(sys.exc_info()[0])
+        #print(sys.exc_info()[0])
         import traceback
-        print(traceback.format_exc())
+        #print(traceback.format_exc())
     finally:
         print("Press Enter to continue ...")
         input()
