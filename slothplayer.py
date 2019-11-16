@@ -270,7 +270,7 @@ if __name__ == '__main__':
             while True: # loop while playing, waiting for user input
 
                 # stop song if it is too long
-                if time.time() - songStartTime > config.maxSongPlayTime * 60
+                if time.time() - songStartTime > config.maxSongPlayTime * 60:
                     print(f"Song exceeded max allowed duration ({config.maxSongPlayTime} minutes). Stoping...")
                     player.stop()
                 
