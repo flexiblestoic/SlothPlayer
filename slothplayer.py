@@ -235,6 +235,7 @@ if __name__ == '__main__':
             list_player.set_media_player(player)
             list_player.set_media_list(media_list)
 
+            player.audio_set_volume(100)
             player.play()
 
             playing = set([1,2,3,4])
@@ -272,6 +273,12 @@ if __name__ == '__main__':
                 # stop song if it is too long
                 if time.time() - songStartTime > config.maxSongPlayTime * 60:
                     print(f"Song exceeded max allowed duration ({config.maxSongPlayTime} minutes). Stoping...")
+                    
+                    #fade out
+                    for i in range(100,0,-5):
+                        player.audio_set_volume(i)
+                        time.sleep(0.5)
+
                     player.stop()
                 
                 # stop song if user request

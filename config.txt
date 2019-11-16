@@ -7,8 +7,9 @@
   "localMusicFoldersActive": false
 
   "youtubePlaylists": [
-    "https://www.youtube.com/playlist?list=PLo3pNg0eiPc-9livXsto4X1ROzJ3kGI-3"  # Quiet Songs Playlist 2020
+    #"https://www.youtube.com/playlist?list=PLo3pNg0eiPc-9livXsto4X1ROzJ3kGI-3"  # Quiet Songs Playlist 2020
     "https://www.youtube.com/playlist?list=PLd6-Jg5IeeosymMDHA5QhzA2CbelAGN6e" # Accoustic
+    "https://www.youtube.com/playlist?list=PLw9zKTSWmoixGTX-e8y0R6xkF6Eq1RhEZ" # Chillhop
   ]
 
   "youtubePlaylistsActive": true
