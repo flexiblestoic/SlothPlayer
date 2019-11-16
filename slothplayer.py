@@ -185,14 +185,15 @@ if __name__ == '__main__':
 
         # populate soundfiles and playlists
         soundfiles = []
+
         if config.localMusicFoldersActive:
             for localMusicFolder in config.localMusicFolders:
-                for fileType in fileTypes:
+                for fileType in config.fileTypes:
                     for filename in Path(localMusicFolder).rglob(fileType):
                         soundfiles.append(str(filename))
 
 
-        playlistData = {}
+        playlistData = {} # used for youtube videos
 
         if config.youtubePlaylistsActive:
             for youtubePlaylist in config.youtubePlaylists:

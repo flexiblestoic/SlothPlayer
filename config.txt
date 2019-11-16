@@ -1,10 +1,10 @@
 {
   "localMusicFolders": [
     "C:\\music"
-    "D:\\mymusic"
+    #"D:\\mymusic"
   ]
 
-  "localMusicFoldersActive": false
+  "localMusicFoldersActive": true
 
   "youtubePlaylists": [
     #"https://www.youtube.com/playlist?list=PLo3pNg0eiPc-9livXsto4X1ROzJ3kGI-3"  # Quiet Songs Playlist 2020
