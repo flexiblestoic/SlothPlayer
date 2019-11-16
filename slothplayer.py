@@ -137,6 +137,7 @@ class Config():
     self.youtubePlaylists = data['youtubePlaylists']
     self.youtubePlaylistsActive = data['youtubePlaylistsActive']
     self.consecutiveReadings = data['consecutiveReadings']
+    self.maxSongPlayTime = data['maxSongPlayTime']
     self.fileTypes = data['fileTypes']
     self.interval = data['interval']
 
@@ -253,6 +254,9 @@ if __name__ == '__main__':
                 print("Song couldn't be loaded, next...")
                 continue
 
+            # the song has loaded at this point
+            songStartTime = time.time()
+
             if playlistData.get(song, None) != None: # attempts to find title for youtube songs
                 print("Playing:", playlistData[song], "Length:", "%02d:%02d" % (mm,ss))
                 print(song)
@@ -264,7 +268,13 @@ if __name__ == '__main__':
 
 
             while True: # loop while playing, waiting for user input
-                    
+
+                # stop song if it is too long
+                if time.time() - songStartTime > config.maxSongPlayTime * 60
+                    print(f"Song exceeded max allowed duration ({config.maxSongPlayTime} minutes). Stoping...")
+                    player.stop()
+                
+                # stop song if user request
                 if kb.kbhit():
                     if kb.getch() == 'n':
                         print("Next song...")
@@ -282,7 +292,7 @@ if __name__ == '__main__':
 
                     songsPlayed += 1 # increase counter of songs played
 
-                    if songsPlayed < consecutiveReadings:
+                    if songsPlayed < config.consecutiveReadings:
                         #read another song
                         break
                     else:
