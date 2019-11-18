@@ -1,8 +1,9 @@
 import random, os, time, sys, vlc
 from pathlib import Path
 import hjson
-from bs4 import BeautifulSoup
-import requests
+from pytube import YouTube, Playlist
+import re
+
 
 # Windows
 if os.name == 'nt':
@@ -101,23 +102,15 @@ class KBHit: #non blocking io from https://stackoverflow.com/questions/2408560/p
 def horizontalLine():
     print("##############################################")
 
+
 def getPlaylistLinks(url):
-    sourceCode = requests.get(url).text
-    soup = BeautifulSoup(sourceCode, 'html.parser')
-    domain = 'https://www.youtube.com'
 
-    output = []
-    playlistData = {}
+    playlist = Playlist(url)
+    playlist.populate_video_urls()
 
-    for link in soup.find_all("a", {"dir": "ltr"}):
-        href = link.get('href')
-        if href.startswith('/watch?'):
-            # print(link.string.strip())
-            pathToVideo = domain + href
-            output.append(pathToVideo)
-            playlistData[pathToVideo] = link.string.strip()
+    output = playlist.video_urls
 
-    return output, playlistData
+    return output
 
 
 def loadConfig(file):
@@ -193,17 +186,12 @@ if __name__ == '__main__':
                         soundfiles.append(str(filename))
 
 
-        playlistData = {} # used for youtube videos
-
         if config.youtubePlaylistsActive:
             for youtubePlaylist in config.youtubePlaylists:
-
-                youtubePlaylistLinks, playlistDataTemp = getPlaylistLinks(youtubePlaylist)
+                youtubePlaylistLinks = getPlaylistLinks(youtubePlaylist)
 
                 for youtubePlaylistLink in youtubePlaylistLinks:
                     soundfiles.append(youtubePlaylistLink)
-
-                playlistData.update(playlistDataTemp)
 
 
         # print(soundfiles)
@@ -218,6 +206,12 @@ if __name__ == '__main__':
 
             horizontalLine()
             song = random.choice(soundfiles)
+
+            song_title = ''
+            if re.search('youtube.com', song):
+                song_title = YouTube(song).title
+                song_title.encode(encoding='UTF-8',errors='strict')
+
             
             # song ="https://youtu.be/9U-N6LqzdIM"
 
@@ -258,9 +252,10 @@ if __name__ == '__main__':
 
             # the song has loaded at this point
             songStartTime = time.time()
+            
 
-            if playlistData.get(song, None) != None: # attempts to find title for youtube songs
-                print("Playing:", playlistData[song], "Length:", "%02d:%02d" % (mm,ss))
+            if song_title != '': 
+                print("Playing:", song_title, "Length:", "%02d:%02d" % (mm,ss))
                 print(song)
             else:
                 print("Playing:", song, "Length:", "%02d:%02d" % (mm,ss))
