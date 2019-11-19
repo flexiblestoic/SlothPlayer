@@ -76,6 +76,7 @@ class Config():
         self.fileTypes = data['fileTypes']
         self.interval = data['interval']
         self.npressed = False
+        self.ppressed = False
         self.songfiles = self.__getsongs()
 
     def __getsongs(self):
@@ -126,6 +127,8 @@ def thread_keyboard(config):
                 horizontalLine()
                 print("Goodbye", Fore.WHITE)
                 os._exit(1)
+            elif keyPressed == 'p':
+                config.ppressed  = True
             else:
                 pass
 
@@ -233,7 +236,7 @@ if __name__ == '__main__':
                 pass
 
 
-            printColor("Press (n) to skip, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
+            printColor("Press (n) to skip, (p) to pause, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
 
 
             while True: # loop while playing, waiting for user input
@@ -266,6 +269,17 @@ if __name__ == '__main__':
                     player.stop()
                     break  # finishing the loop
 
+                if config.ppressed == True:
+                    config.ppressed = False
+                    horizontalLine()
+                    printColor("Pause... Press Enter to continue")
+                    horizontalLine()
+                    player.pause()
+                    input()
+                    player.play()
+                    
+
+
 
 
                 state = player.get_state()
@@ -283,7 +297,7 @@ if __name__ == '__main__':
                         sleepInterval = random.randint(config.interval[0],config.interval[1])
 
                         printColor(f'Sleeping for {sleepInterval} minutes')
-                        printColor("Press (n) to skip, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
+                        printColor("Press (n) to skip, (p) to pause, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
 
 
                         for i in range(sleepInterval*60,0,-1):
@@ -309,7 +323,7 @@ if __name__ == '__main__':
 
                         break
 
-                time.sleep(1)
+                time.sleep(0.3)
 
 
 
