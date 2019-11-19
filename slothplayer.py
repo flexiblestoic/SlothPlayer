@@ -5,6 +5,22 @@ from pytube import YouTube, Playlist
 import re
 import html
 import threading
+from colorama import Fore, Back, Style, init
+
+def printColor(text, argcolor = "white"):
+
+    if argcolor == "white":
+        color = Fore.WHITE
+    elif argcolor == "green":
+        color = Fore.GREEN
+    elif argcolor == "magenta":
+        color = Fore.MAGENTA
+    elif argcolor == "grey":
+        color = Fore.LIGHTBLACK_EX
+    elif argcolor == "pink":
+        color = Fore.LIGHTRED_EX        
+    guardColor = Fore.LIGHTBLACK_EX
+    print(color, text, guardColor)
 
 # Windows
 if os.name == 'nt':
@@ -101,7 +117,7 @@ class KBHit: #non blocking io from https://stackoverflow.com/questions/2408560/p
 
 
 def horizontalLine():
-    print("##############################################")
+    printColor("--------------------------------")
 
 
 def getPlaylistLinks(url):
@@ -121,14 +137,14 @@ class Config():
         self.loadconfig(file)
 
     def printconfig(self):
-        horizontalLine()
-        print(f"Local Folders: {self.localMusicFolders}")
-        print(f"Active: {self.localMusicFoldersActive}")
-        print(f"Youtube Playlists: {self.youtubePlaylists}")
-        print(f"Active: {self.youtubePlaylistsActive}")
-        print(f"Silence Interval: {self.interval}")
-        print(f"{len(self.getsongs())} music files found.")
-        horizontalLine()
+
+        printColor(f"Local Folders: {self.localMusicFolders}")
+        printColor(f"Active: {self.localMusicFoldersActive}")
+        printColor(f"Youtube Playlists: {self.youtubePlaylists}")
+        printColor(f"Active: {self.youtubePlaylistsActive}")
+        printColor(f"Silence Interval: {self.interval}")
+        printColor(f"{len(self.songfiles)} music files found.")
+
 
 
     def loadconfig(self, file):
@@ -139,12 +155,9 @@ class Config():
                     data = hjson.load(config_file)
                     break
             except:
-                print("The configuration couldn't be loaded, please check the syntax of config.txt. Press any button when ready")
+                printColor("The configuration couldn't be loaded, please check the syntax of config.txt. Press any button when ready")
                 os.startfile("config.txt")
                 input()
-
-
-        
 
         self.localMusicFolders = data['localMusicFolders']
         self.localMusicFoldersActive = data['localMusicFoldersActive']
@@ -155,10 +168,9 @@ class Config():
         self.fileTypes = data['fileTypes']
         self.interval = data['interval']
         self.npressed = False
+        self.songfiles = self.__getsongs()
 
-        self.getsongs()
-
-    def getsongs(self):
+    def __getsongs(self):
         
         soundfiles = []
 
@@ -193,13 +205,19 @@ def thread_keyboard(config):
                 config.npressed  = True
 
             elif keyPressed == 'c':
-                print("Opening configuration file")
+                horizontalLine()
+                printColor("Opening configuration file")
+                horizontalLine()
                 os.startfile("config.txt")
             elif keyPressed == 'r':
+                horizontalLine()
+                printColor("Loading Config...")
+                horizontalLine()
                 config.loadconfig("config.txt")
                 config.printconfig()
             elif keyPressed == 'q':
-                print("Goodbye")
+                horizontalLine()
+                print("Goodbye", Fore.WHITE)
                 os._exit(1)
             else:
                 pass
@@ -210,10 +228,13 @@ def thread_keyboard(config):
 
 
 if __name__ == '__main__':
+
+    init()
+
     try:
         ## your code, typically one function call
 
-        print('''                                                                                                                                                                                                                                                             
+        printColor('''                                                                                                                                                                                                                                                             
    _____ _       _   _       _____  _                       
   / ____| |     | | | |     |  __ \| |                      
  | (___ | | ___ | |_| |__   | |__) | | __ _ _   _  ___ _ __ 
@@ -223,12 +244,13 @@ if __name__ == '__main__':
                                              __/ |          
                                             |___/                          
  v1-beta
-        ''')
+        ''', "magenta")
 
 
 
         horizontalLine()
-        print("Loading Config...")
+        printColor("Loading Config...")
+        horizontalLine()
         config = Config("config.txt")
 
         config.printconfig()
@@ -247,7 +269,7 @@ if __name__ == '__main__':
         while True: # main loop (each song)
 
             horizontalLine()
-            song = random.choice(config.getsongs())
+            song = random.choice(config.songfiles)
 
             song_title = ''
             if re.search('youtube.com', song):
@@ -289,7 +311,7 @@ if __name__ == '__main__':
                     break
 
             if i == 10:
-                print("Song couldn't be loaded, next...")
+                printColor("Song couldn't be loaded, next...")
                 continue
 
             # the song has loaded at this point
@@ -297,20 +319,21 @@ if __name__ == '__main__':
             
 
             if song_title != '': 
-                print("Playing:", song_title, "Length:", "%02d:%02d" % (mm,ss))
-                print(song)
+                printColor(f"Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}", "green")
+                printColor(song, 'green')
             else:
-                print("Playing:", song, "Length:", "%02d:%02d" % (mm,ss))
+                printColor(f"Playing: {song} Length: {mm:00.0f}:{ss:00.0f}", "green")
+                pass
 
 
-            print("Press (n) to skip, (c) to open config.txt, (r) to reload configuration and (q) to quit")
+            printColor("Press (n) to skip, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
 
 
             while True: # loop while playing, waiting for user input
 
                 # stop song if it is too long
                 if time.time() - songStartTime > config.maxSongPlayTime * 60:
-                    print(f"Song exceeded max allowed duration ({config.maxSongPlayTime} minutes). Stoping...")
+                    printColor(f"Song exceeded max allowed duration ({config.maxSongPlayTime} minutes). Stoping...")
                     
                     #fade out
                     for i in range(100,0,-5):
@@ -331,7 +354,8 @@ if __name__ == '__main__':
 
                 if config.npressed == True:
                     config.npressed = False
-                    print("Next song...")
+                    horizontalLine()
+                    printColor("Next song...")
                     player.stop()
                     break  # finishing the loop
 
@@ -351,15 +375,16 @@ if __name__ == '__main__':
                         #wait the required sleep interval
                         sleepInterval = random.randint(config.interval[0],config.interval[1])
 
-                        print(f'Sleeping for {sleepInterval} minutes')
-                        print("Press (n) to skip, (c) to open config.txt, (r) to reload configuration and (q) to quit")
+                        printColor(f'Sleeping for {sleepInterval} minutes')
+                        printColor("Press (n) to skip, (c) to open config.txt, (r) to reload configuration and (q) to quit")
 
 
                         for i in range(sleepInterval*60,0,-1):
                                 
                             if config.npressed == True:
                                 config.npressed = False
-                                print("Next song...")
+                                horizontalLine()
+                                printColor("Next song...")
                                 player.stop()
                                 break  # finishing the loop
 
@@ -383,9 +408,9 @@ if __name__ == '__main__':
 
     except BaseException: # to keep the command window open upon exit (in case of error for example)
         import sys
-        print(sys.exc_info()[0])
+        printColor(sys.exc_info()[0])
         import traceback
-        print(traceback.format_exc())
+        printColor(traceback.format_exc())
     finally:
-        print("Press Enter to continue ...")
+        print("Press Enter to continue ...", Fore.WHITE)
         input()
