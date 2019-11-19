@@ -93,8 +93,7 @@ class Config():
             for youtubePlaylist in self.youtubePlaylists:
                 youtubePlaylistLinks = getPlaylistLinks(youtubePlaylist)
 
-                for youtubePlaylistLink in youtubePlaylistLinks:
-                    soundfiles.append(youtubePlaylistLink)
+                soundfiles = soundfiles + youtubePlaylistLinks
 
         return soundfiles
 
@@ -284,7 +283,7 @@ if __name__ == '__main__':
                         sleepInterval = random.randint(config.interval[0],config.interval[1])
 
                         printColor(f'Sleeping for {sleepInterval} minutes')
-                        printColor("Press (n) to skip, (c) to open config.txt, (r) to reload configuration and (q) to quit")
+                        printColor("Press (n) to skip, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
 
 
                         for i in range(sleepInterval*60,0,-1):
@@ -312,7 +311,7 @@ if __name__ == '__main__':
 
                 time.sleep(1)
 
-        kb.set_normal_term()
+
 
     except BaseException: # to keep the command window open upon exit (in case of error for example)
         import sys
