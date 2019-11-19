@@ -4,6 +4,7 @@ import hjson
 from pytube import YouTube, Playlist
 import re
 import html
+import threading
 
 # Windows
 if os.name == 'nt':
@@ -124,15 +125,78 @@ def loadConfig(file):
 
 class Config():
 
-  def __init__(self, data):
-    self.localMusicFolders = data['localMusicFolders']
-    self.localMusicFoldersActive = data['localMusicFoldersActive']
-    self.youtubePlaylists = data['youtubePlaylists']
-    self.youtubePlaylistsActive = data['youtubePlaylistsActive']
-    self.consecutiveReadings = data['consecutiveReadings']
-    self.maxSongPlayTime = data['maxSongPlayTime']
-    self.fileTypes = data['fileTypes']
-    self.interval = data['interval']
+    def __init__(self, data):
+        self.localMusicFolders = data['localMusicFolders']
+        self.localMusicFoldersActive = data['localMusicFoldersActive']
+        self.youtubePlaylists = data['youtubePlaylists']
+        self.youtubePlaylistsActive = data['youtubePlaylistsActive']
+        self.consecutiveReadings = data['consecutiveReadings']
+        self.maxSongPlayTime = data['maxSongPlayTime']
+        self.fileTypes = data['fileTypes']
+        self.interval = data['interval']
+        self.npressed = False
+
+    def reloadconfig(self, file):
+        with open(file, encoding='utf-8') as config_file:
+            data = hjson.load(config_file)
+
+        self.localMusicFolders = data['localMusicFolders']
+        self.localMusicFoldersActive = data['localMusicFoldersActive']
+        self.youtubePlaylists = data['youtubePlaylists']
+        self.youtubePlaylistsActive = data['youtubePlaylistsActive']
+        self.consecutiveReadings = data['consecutiveReadings']
+        self.maxSongPlayTime = data['maxSongPlayTime']
+        self.fileTypes = data['fileTypes']
+        self.interval = data['interval']
+        self.npressed = False
+
+    def getsongs(self):
+        
+        soundfiles = []
+
+        if self.localMusicFoldersActive:
+            for localMusicFolder in self.localMusicFolders:
+                for fileType in self.fileTypes:
+                    for filename in Path(localMusicFolder).rglob(fileType):
+                        soundfiles.append(str(filename))
+
+
+        if self.youtubePlaylistsActive:
+            for youtubePlaylist in self.youtubePlaylists:
+                youtubePlaylistLinks = getPlaylistLinks(youtubePlaylist)
+
+                for youtubePlaylistLink in youtubePlaylistLinks:
+                    soundfiles.append(youtubePlaylistLink)
+
+        return soundfiles
+
+
+    
+
+def thread_keyboard(config):
+
+    kb = KBHit()
+
+    while True:
+        if kb.kbhit():
+            keyPressed = kb.getch()
+
+            if keyPressed == 'n':
+                config.npressed  = True
+
+            elif keyPressed == 'c':
+                print("Opening configuration file")
+                os.startfile("config.txt")
+            elif keyPressed == 'r':
+                config.reloadconfig("config.txt")
+                print("Configuration reloaded")
+            else:
+                pass
+
+
+        time.sleep(0.2)
+
+
 
 if __name__ == '__main__':
     try:
@@ -172,31 +236,17 @@ if __name__ == '__main__':
         instance=vlc.Instance("--novideo", "--verbose=0")
         player=instance.media_player_new()
 
+        x = threading.Thread(target=thread_keyboard, args=(config,), daemon=True)
+        x.start()
+
+
         # os.system('cls' if os.name == 'nt' else 'clear')
         horizontalLine()
         print("Searching for music...")
 
-        # populate soundfiles and playlists
-        soundfiles = []
-
-        if config.localMusicFoldersActive:
-            for localMusicFolder in config.localMusicFolders:
-                for fileType in config.fileTypes:
-                    for filename in Path(localMusicFolder).rglob(fileType):
-                        soundfiles.append(str(filename))
 
 
-        if config.youtubePlaylistsActive:
-            for youtubePlaylist in config.youtubePlaylists:
-                youtubePlaylistLinks = getPlaylistLinks(youtubePlaylist)
-
-                for youtubePlaylistLink in youtubePlaylistLinks:
-                    soundfiles.append(youtubePlaylistLink)
-
-
-        # print(soundfiles)
-
-        print(f"{len(soundfiles)} music files found.")
+        print(f"{len(config.getsongs())} music files found.")
 
         songsPlayed = 0
 
@@ -204,8 +254,10 @@ if __name__ == '__main__':
 
         while True: # main loop (each song)
 
+
+
             horizontalLine()
-            song = random.choice(soundfiles)
+            song = random.choice(config.getsongs())
 
             song_title = ''
             if re.search('youtube.com', song):
@@ -278,14 +330,23 @@ if __name__ == '__main__':
                     player.stop()
                 
                 # stop song if user request
-                if kb.kbhit():
-                    if kb.getch() == 'n':
-                        print("Next song...")
-                        player.stop()
-                        break  # finishing the loop
+                # if kb.kbhit():
+                #     if kb.getch() == 'n':
+                #         print("Next song...")
+                #         player.stop()
+                #         break  # finishing the loop
 
-                    else:
-                        pass
+                #     else:
+                #         pass
+
+                if config.npressed == True:
+                    config.npressed = False
+                    print("Next song...")
+                    player.stop()
+                    break  # finishing the loop
+
+                else:
+                    pass
 
 
                 state = player.get_state()
