@@ -114,29 +114,20 @@ def getPlaylistLinks(url):
     return output
 
 
-def loadConfig(file):
-    with open(file, encoding='utf-8') as config_file:
-        data = hjson.load(config_file)
-    
-    config = Config(data)
-
-    return config
-
 
 class Config():
 
-    def __init__(self, data):
-        self.localMusicFolders = data['localMusicFolders']
-        self.localMusicFoldersActive = data['localMusicFoldersActive']
-        self.youtubePlaylists = data['youtubePlaylists']
-        self.youtubePlaylistsActive = data['youtubePlaylistsActive']
-        self.consecutiveReadings = data['consecutiveReadings']
-        self.maxSongPlayTime = data['maxSongPlayTime']
-        self.fileTypes = data['fileTypes']
-        self.interval = data['interval']
-        self.npressed = False
+    def __init__(self, file):
+        self.loadconfig(file)
 
-    def reloadconfig(self, file):
+    def loadconfig(self, file):
+
+        # try:
+        #     config = loadConfig("config.txt")
+        # except:
+        #     print("The configuration couldn't be loaded, please check the syntax of config.txt")
+        #     sys.exit(1)
+
         with open(file, encoding='utf-8') as config_file:
             data = hjson.load(config_file)
 
@@ -219,12 +210,7 @@ if __name__ == '__main__':
         horizontalLine()
         print("Loading Config...")
 
-        try:
-            config = loadConfig("config.txt")
-        except:
-            print("The configuration couldn't be loaded, please check the syntax of config.txt")
-            sys.exit(1)
-
+        config = Config("config.txt")
 
 
         print(f"Local Folders: {config.localMusicFolders}")
@@ -249,8 +235,6 @@ if __name__ == '__main__':
         print(f"{len(config.getsongs())} music files found.")
 
         songsPlayed = 0
-
-        kb = KBHit()
 
         while True: # main loop (each song)
 
@@ -345,8 +329,6 @@ if __name__ == '__main__':
                     player.stop()
                     break  # finishing the loop
 
-                else:
-                    pass
 
 
                 state = player.get_state()
@@ -368,13 +350,12 @@ if __name__ == '__main__':
 
 
                         for i in range(sleepInterval*60,0,-1):
-                            if kb.kbhit():
-                                if kb.getch() == 'n':
-                                    print("Skip pause...")
-                                    break  # finishing the loop
-
-                                else:
-                                    pass
+                                
+                            if config.npressed == True:
+                                config.npressed = False
+                                print("Next song...")
+                                player.stop()
+                                break  # finishing the loop
 
 
                             if i%60 == 0:
