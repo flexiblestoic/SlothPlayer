@@ -120,16 +120,31 @@ class Config():
     def __init__(self, file):
         self.loadconfig(file)
 
+    def printconfig(self):
+        horizontalLine()
+        print(f"Local Folders: {self.localMusicFolders}")
+        print(f"Active: {self.localMusicFoldersActive}")
+        print(f"Youtube Playlists: {self.youtubePlaylists}")
+        print(f"Active: {self.youtubePlaylistsActive}")
+        print(f"Silence Interval: {self.interval}")
+        print(f"{len(self.getsongs())} music files found.")
+        horizontalLine()
+
+
     def loadconfig(self, file):
 
-        # try:
-        #     config = loadConfig("config.txt")
-        # except:
-        #     print("The configuration couldn't be loaded, please check the syntax of config.txt")
-        #     sys.exit(1)
+        while True:
+            try:
+                with open(file, encoding='utf-8') as config_file:
+                    data = hjson.load(config_file)
+                    break
+            except:
+                print("The configuration couldn't be loaded, please check the syntax of config.txt. Press any button when ready")
+                os.startfile("config.txt")
+                input()
 
-        with open(file, encoding='utf-8') as config_file:
-            data = hjson.load(config_file)
+
+        
 
         self.localMusicFolders = data['localMusicFolders']
         self.localMusicFoldersActive = data['localMusicFoldersActive']
@@ -140,6 +155,8 @@ class Config():
         self.fileTypes = data['fileTypes']
         self.interval = data['interval']
         self.npressed = False
+
+        self.getsongs()
 
     def getsongs(self):
         
@@ -179,8 +196,11 @@ def thread_keyboard(config):
                 print("Opening configuration file")
                 os.startfile("config.txt")
             elif keyPressed == 'r':
-                config.reloadconfig("config.txt")
-                print("Configuration reloaded")
+                config.loadconfig("config.txt")
+                config.printconfig()
+            elif keyPressed == 'q':
+                print("Goodbye")
+                os._exit(1)
             else:
                 pass
 
@@ -209,15 +229,10 @@ if __name__ == '__main__':
 
         horizontalLine()
         print("Loading Config...")
-
         config = Config("config.txt")
 
+        config.printconfig()
 
-        print(f"Local Folders: {config.localMusicFolders}")
-        print(f"Active: {config.localMusicFoldersActive}")
-        print(f"Youtube Playlists: {config.youtubePlaylists}")
-        print(f"Active: {config.youtubePlaylistsActive}")
-        print(f"Silence Interval: {config.interval}")
 
         instance=vlc.Instance("--novideo", "--verbose=0")
         player=instance.media_player_new()
@@ -226,19 +241,10 @@ if __name__ == '__main__':
         x.start()
 
 
-        # os.system('cls' if os.name == 'nt' else 'clear')
-        horizontalLine()
-        print("Searching for music...")
-
-
-
-        print(f"{len(config.getsongs())} music files found.")
 
         songsPlayed = 0
 
         while True: # main loop (each song)
-
-
 
             horizontalLine()
             song = random.choice(config.getsongs())
@@ -297,7 +303,7 @@ if __name__ == '__main__':
                 print("Playing:", song, "Length:", "%02d:%02d" % (mm,ss))
 
 
-            print("Press (n) to next")
+            print("Press (n) to skip, (c) to open config.txt, (r) to reload configuration and (q) to quit")
 
 
             while True: # loop while playing, waiting for user input
@@ -346,7 +352,7 @@ if __name__ == '__main__':
                         sleepInterval = random.randint(config.interval[0],config.interval[1])
 
                         print(f'Sleeping for {sleepInterval} minutes')
-                        print("Press (n) to skip pause")
+                        print("Press (n) to skip, (c) to open config.txt, (r) to reload configuration and (q) to quit")
 
 
                         for i in range(sleepInterval*60,0,-1):
