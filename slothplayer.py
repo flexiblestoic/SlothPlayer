@@ -3,7 +3,7 @@ from pathlib import Path
 import hjson
 from pytube import YouTube, Playlist
 import re
-
+import html
 
 # Windows
 if os.name == 'nt':
@@ -209,8 +209,8 @@ if __name__ == '__main__':
 
             song_title = ''
             if re.search('youtube.com', song):
-                song_title = YouTube(song).title
-                song_title.encode(encoding='UTF-8',errors='strict')
+                song_title = html.unescape(YouTube(song).title)
+                
 
             
             # song ="https://youtu.be/9U-N6LqzdIM"
@@ -308,7 +308,7 @@ if __name__ == '__main__':
 
                         for i in range(sleepInterval*60,0,-1):
                             if kb.kbhit():
-                                if kb.getch() == b'n':
+                                if kb.getch() == 'n':
                                     print("Skip pause...")
                                     break  # finishing the loop
 
