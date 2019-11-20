@@ -43,7 +43,7 @@ class SlothPlayer():
         self.loadconfig(file)
 
     
-    def getPlaylistLinks(url):
+    def getPlaylistLinks(self, url):
 
         playlist = Playlist(url)
         playlist.populate_video_urls()
