@@ -115,6 +115,7 @@ class SlothPlayer():
         media_list = instance.media_list_new([song]) #A list of one song
         
         player.set_media(media)
+        self.player.audio_set_volume(100)
 
         if 'youtube.com' in song:
             song_title = html.unescape(YouTube(song).title)
@@ -215,9 +216,8 @@ if __name__ == '__main__':
         while True: # main loop (each song)
 
             horizontalLine()
+            
             song = random.choice(slothplayer.songfiles)
-
-            slothplayer.player.audio_set_volume(100)
             song_title = slothplayer.play(song)
 
             playing = set([1,2,3,4])
@@ -257,16 +257,7 @@ if __name__ == '__main__':
                         time.sleep(0.5)
 
                     slothplayer.stop()
-                
-                # stop song if user request
-                # if kb.kbhit():
-                #     if kb.getch() == 'n':
-                #         print("Next song...")
-                #         player.stop()
-                #         break  # finishing the loop
 
-                #     else:
-                #         pass
 
                 if slothplayer.npressed == True:
                     slothplayer.npressed = False
@@ -284,9 +275,6 @@ if __name__ == '__main__':
                     input()
                     slothplayer.resume()
                     
-
-
-
 
                 state = slothplayer.get_state()
                 # print(state)
