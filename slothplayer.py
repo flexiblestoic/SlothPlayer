@@ -78,6 +78,7 @@ class Config():
         self.npressed = False
         self.ppressed = False
         self.songfiles = self.__getsongs()
+        self.refreshFrequency = 10 #Hz
 
     def __getsongs(self):
         
@@ -300,7 +301,7 @@ if __name__ == '__main__':
                         printColor("Press (n) to skip, (p) to pause, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
 
 
-                        for i in range(sleepInterval*60,0,-1):
+                        for i in range(sleepInterval*60*config.refreshFrequency,0,-1):
                                 
                             if config.npressed == True:
                                 config.npressed = False
@@ -310,11 +311,11 @@ if __name__ == '__main__':
                                 break  # finishing the loop
 
 
-                            if i%60 == 0:
-                                sys.stdout.write(str(int(i/60))+' ')
+                            if i%(60*config.refreshFrequency) == 0:
+                                sys.stdout.write(str(int(i/(60*config.refreshFrequency)))+' ')
                                 sys.stdout.flush()
 
-                            time.sleep(1)
+                            time.sleep(1.0/config.refreshFrequency)
 
                         print(' ')
 
@@ -323,7 +324,7 @@ if __name__ == '__main__':
 
                         break
 
-                time.sleep(0.3)
+                time.sleep(1.0/config.refreshFrequency)
 
 
 
