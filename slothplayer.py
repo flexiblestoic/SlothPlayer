@@ -28,14 +28,6 @@ def horizontalLine():
     printColor("--------------------------------")
 
 
-def getPlaylistLinks(url):
-
-    playlist = Playlist(url)
-    playlist.populate_video_urls()
-
-    output = playlist.video_urls
-
-    return output
 
 
 
@@ -49,6 +41,16 @@ class SlothPlayer():
         self.refreshFrequency = 10 #Hz
 
         self.loadconfig(file)
+
+    
+    def getPlaylistLinks(url):
+
+        playlist = Playlist(url)
+        playlist.populate_video_urls()
+
+        output = playlist.video_urls
+
+        return output
 
     def printconfig(self):
 
@@ -97,7 +99,7 @@ class SlothPlayer():
 
         if self.youtubePlaylistsActive:
             for youtubePlaylist in self.youtubePlaylists:
-                youtubePlaylistLinks = getPlaylistLinks(youtubePlaylist)
+                youtubePlaylistLinks = self.getPlaylistLinks(youtubePlaylist)
 
                 soundfiles = soundfiles + youtubePlaylistLinks
 
@@ -114,15 +116,24 @@ class SlothPlayer():
         
         player.set_media(media)
 
+        if 'youtube.com' in song:
+            song_title = html.unescape(YouTube(song).title)
+        else:
+            song_title = song
+
         #Create a new MediaListPlayer instance and associate the player and playlist with it
         list_player =  instance.media_list_player_new()
         list_player.set_media_player(player)
         list_player.set_media_list(media_list)
 
         player.play()
+        return song_title
 
     def pause(self):
         self.player.pause()
+
+    def stop(self):
+        self.player.stop()
 
     def resume(self):
         self.player.play()
@@ -206,13 +217,8 @@ if __name__ == '__main__':
             horizontalLine()
             song = random.choice(slothplayer.songfiles)
 
-            song_title = ''
-            if re.search('youtube.com', song):
-                song_title = html.unescape(YouTube(song).title)
-                
-
-            player.audio_set_volume(100)
-            player.play()
+            slothplayer.player.audio_set_volume(100)
+            song_title = slothplayer.play(song)
 
             playing = set([1,2,3,4])
             
@@ -220,7 +226,7 @@ if __name__ == '__main__':
             i = 0
             while i < 10:
                 time.sleep(1) #Give time to get going
-                duration = player.get_length() / 1000
+                duration = slothplayer.player.get_length() / 1000
                 mm, ss = divmod(duration, 60)
                 if mm+ss == 0: # means song not loaded
                     i = i+1
@@ -234,14 +240,7 @@ if __name__ == '__main__':
             # the song has loaded at this point
             songStartTime = time.time()
             
-
-            if song_title != '': 
-                printColor(f"Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}", "green")
-                printColor(song, 'green')
-            else:
-                printColor(f"Playing: {song} Length: {mm:00.0f}:{ss:00.0f}", "green")
-                pass
-
+            printColor(f"Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}", "green")
 
             printColor("Press (n) to skip, (p) to pause, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
 
@@ -254,10 +253,10 @@ if __name__ == '__main__':
                     
                     #fade out
                     for i in range(100,0,-5):
-                        player.audio_set_volume(i)
+                        slothplayer.player.audio_set_volume(i)
                         time.sleep(0.5)
 
-                    player.stop()
+                    slothplayer.stop()
                 
                 # stop song if user request
                 # if kb.kbhit():
@@ -273,7 +272,7 @@ if __name__ == '__main__':
                     slothplayer.npressed = False
                     horizontalLine()
                     printColor("Next song...")
-                    player.stop()
+                    slothplayer.stop()
                     break  # finishing the loop
 
                 if slothplayer.ppressed == True:
@@ -281,15 +280,15 @@ if __name__ == '__main__':
                     horizontalLine()
                     printColor("Pause... Press Enter to continue")
                     horizontalLine()
-                    player.pause()
+                    slothplayer.pause()
                     input()
-                    player.play()
+                    slothplayer.resume()
                     
 
 
 
 
-                state = player.get_state()
+                state = slothplayer.get_state()
                 # print(state)
 
                 if state not in playing: # if the song is finished
@@ -313,7 +312,7 @@ if __name__ == '__main__':
                                 slothplayer.npressed = False
                                 horizontalLine()
                                 printColor("Next song...")
-                                player.stop()
+                                slothplayer.stop()
                                 break  # finishing the loop
 
 
