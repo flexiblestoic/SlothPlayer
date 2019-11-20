@@ -39,7 +39,7 @@ def getPlaylistLinks(url):
 
 
 
-class Config():
+class SlothPlayer():
 
     def __init__(self, file):
         self.loadconfig(file)
@@ -162,15 +162,15 @@ if __name__ == '__main__':
         horizontalLine()
         printColor("Loading Config...")
         horizontalLine()
-        config = Config("config.txt")
+        slothplayer = SlothPlayer("config.txt")
 
-        config.printconfig()
+        slothplayer.printconfig()
 
 
         instance=vlc.Instance("--novideo", "--verbose=0")
         player=instance.media_player_new()
 
-        x = threading.Thread(target=thread_keyboard, args=(config,), daemon=True)
+        x = threading.Thread(target=thread_keyboard, args=(slothplayer,), daemon=True)
         x.start()
 
 
@@ -180,7 +180,7 @@ if __name__ == '__main__':
         while True: # main loop (each song)
 
             horizontalLine()
-            song = random.choice(config.songfiles)
+            song = random.choice(slothplayer.songfiles)
 
             song_title = ''
             if re.search('youtube.com', song):
@@ -243,7 +243,7 @@ if __name__ == '__main__':
             while True: # loop while playing, waiting for user input
 
                 # stop song if it is too long
-                if time.time() - songStartTime > config.maxSongPlayTime * 60:
+                if time.time() - songStartTime > slothplayer.maxSongPlayTime * 60:
                     printColor(f"Song exceeded max allowed duration ({config.maxSongPlayTime} minutes). Stoping...")
                     
                     #fade out
@@ -263,15 +263,15 @@ if __name__ == '__main__':
                 #     else:
                 #         pass
 
-                if config.npressed == True:
-                    config.npressed = False
+                if slothplayer.npressed == True:
+                    slothplayer.npressed = False
                     horizontalLine()
                     printColor("Next song...")
                     player.stop()
                     break  # finishing the loop
 
-                if config.ppressed == True:
-                    config.ppressed = False
+                if slothplayer.ppressed == True:
+                    slothplayer.ppressed = False
                     horizontalLine()
                     printColor("Pause... Press Enter to continue")
                     horizontalLine()
@@ -290,32 +290,32 @@ if __name__ == '__main__':
 
                     songsPlayed += 1 # increase counter of songs played
 
-                    if songsPlayed < config.consecutiveReadings:
+                    if songsPlayed < slothplayer.consecutiveReadings:
                         #read another song
                         break
                     else:
                         #wait the required sleep interval
-                        sleepInterval = random.randint(config.interval[0],config.interval[1])
+                        sleepInterval = random.randint(slothplayer.interval[0],slothplayer.interval[1])
 
                         printColor(f'Sleeping for {sleepInterval} minutes')
                         printColor("Press (n) to skip, (p) to pause, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
 
 
-                        for i in range(sleepInterval*60*config.refreshFrequency,0,-1):
+                        for i in range(sleepInterval*60*slothplayer.refreshFrequency,0,-1):
                                 
-                            if config.npressed == True:
-                                config.npressed = False
+                            if slothplayer.npressed == True:
+                                slothplayer.npressed = False
                                 horizontalLine()
                                 printColor("Next song...")
                                 player.stop()
                                 break  # finishing the loop
 
 
-                            if i%(60*config.refreshFrequency) == 0:
-                                sys.stdout.write(str(int(i/(60*config.refreshFrequency)))+' ')
+                            if i%(60*slothplayer.refreshFrequency) == 0:
+                                sys.stdout.write(str(int(i/(60*slothplayer.refreshFrequency)))+' ')
                                 sys.stdout.flush()
 
-                            time.sleep(1.0/config.refreshFrequency)
+                            time.sleep(1.0/slothplayer.refreshFrequency)
 
                         print(' ')
 
@@ -324,7 +324,7 @@ if __name__ == '__main__':
 
                         break
 
-                time.sleep(1.0/config.refreshFrequency)
+                time.sleep(1.0/slothplayer.refreshFrequency)
 
 
 
