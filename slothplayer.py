@@ -25,7 +25,7 @@ def printColor(text, argcolor = "white"):
 class SlothPlayer():
 
     def __init__(self, file):
-        self.instance=vlc.Instance("--novideo", "--verbose=0")
+        self.instance=vlc.Instance("--novideo",  "--quiet")
         self.player = self.instance.media_player_new()
         self.npressed = False
         self.ppressed = False
@@ -134,4 +134,26 @@ class SlothPlayer():
         return self.player.get_state()
 
 
+if __name__ == "__main__":
+
+    import time
     
+    slothplayer = SlothPlayer("config.txt")
+    shortsong = u'https://www.youtube.com/watch?v=EzKImzjwGyM'
+    longsong = u"https://www.youtube.com/watch?v=sksNCp00R7U"
+    
+    song = longsong
+
+    slothplayer.play(song)
+
+    playing = set([0,1,2,3,4])
+
+    time.sleep(5)
+
+    slothplayer.pause()
+
+    time.sleep(5)
+
+    slothplayer.resume()
+
+    time.sleep(10)
