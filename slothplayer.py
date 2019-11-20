@@ -42,6 +42,12 @@ def getPlaylistLinks(url):
 class SlothPlayer():
 
     def __init__(self, file):
+        self.instance=vlc.Instance("--novideo", "--verbose=0")
+        self.player = self.instance.media_player_new()
+        self.npressed = False
+        self.ppressed = False
+        self.refreshFrequency = 10 #Hz
+
         self.loadconfig(file)
 
     def printconfig(self):
@@ -75,12 +81,10 @@ class SlothPlayer():
         self.maxSongPlayTime = data['maxSongPlayTime']
         self.fileTypes = data['fileTypes']
         self.interval = data['interval']
-        self.npressed = False
-        self.ppressed = False
-        self.songfiles = self.__getsongs()
-        self.refreshFrequency = 10 #Hz
+        self.songfiles = self.__fetchsongs()
+        
 
-    def __getsongs(self):
+    def __fetchsongs(self):
         
         soundfiles = []
 
@@ -98,6 +102,33 @@ class SlothPlayer():
                 soundfiles = soundfiles + youtubePlaylistLinks
 
         return soundfiles
+        
+
+    def play(self, song):
+        #movie is the YouTube or a local URL
+        instance = self.instance
+        player = self.player
+
+        media = instance.media_new(song)
+        media_list = instance.media_list_new([song]) #A list of one song
+        
+        player.set_media(media)
+
+        #Create a new MediaListPlayer instance and associate the player and playlist with it
+        list_player =  instance.media_list_player_new()
+        list_player.set_media_player(player)
+        list_player.set_media_list(media_list)
+
+        player.play()
+
+    def pause(self):
+        self.player.pause()
+
+    def resume(self):
+        self.player.play()
+
+    def get_state(self):
+        return self.player.get_state()
 
 
     
@@ -143,7 +174,6 @@ if __name__ == '__main__':
     init()
 
     try:
-        ## your code, typically one function call
 
         printColor('''                                                                                                                                                                                                                                                             
    _____ _       _   _       _____  _                       
@@ -166,14 +196,8 @@ if __name__ == '__main__':
 
         slothplayer.printconfig()
 
-
-        instance=vlc.Instance("--novideo", "--verbose=0")
-        player=instance.media_player_new()
-
         x = threading.Thread(target=thread_keyboard, args=(slothplayer,), daemon=True)
         x.start()
-
-
 
         songsPlayed = 0
 
@@ -186,24 +210,6 @@ if __name__ == '__main__':
             if re.search('youtube.com', song):
                 song_title = html.unescape(YouTube(song).title)
                 
-
-            
-            # song ="https://youtu.be/9U-N6LqzdIM"
-
-
-            media = instance.media_new(song)
-
-            # song is the YouTube or a local URL
-
-            media_list = instance.media_list_new([song]) #A list of one song
-
-            player = instance.media_player_new()
-            player.set_media(media)
-
-            # Create a new MediaListPlayer instance and associate the player and playlist with it
-            list_player =  instance.media_list_player_new()
-            list_player.set_media_player(player)
-            list_player.set_media_list(media_list)
 
             player.audio_set_volume(100)
             player.play()
