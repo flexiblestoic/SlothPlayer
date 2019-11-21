@@ -25,6 +25,7 @@ def printColor(text, argcolor = "white"):
 class SlothPlayer():
 
     def __init__(self, file):
+        #self.instance = vlc.Instance("--novideo",  "--quiet")
         self.instance = vlc.Instance("--novideo",  "--quiet")
         self.player = self.instance.media_player_new()
         self.npressed = False

@@ -5,7 +5,7 @@ from colorama import Fore, Back, Style, init
 from slothplayer import printColor, SlothPlayer
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 def horizontalLine():
     printColor("--------------------------------")
@@ -87,7 +87,13 @@ if __name__ == '__main__':
             song = random.choice(slothplayer.songfiles)
 
             logging.debug('Fetching song title')
-            song_title = slothplayer.play(song)
+
+            try:
+                song_title = slothplayer.play(song)
+            except:
+                continue
+
+            
             logging.debug('Fetching song title... done')
 
             playing = set([1,2,3,4])
@@ -123,6 +129,7 @@ if __name__ == '__main__':
 
                 
                 # stop song if it is too long
+                logging.debug('stop song if it is too long')
                 if time.time() - songStartTime > slothplayer.maxSongPlayTime * 60:
                     printColor(f"Song exceeded max allowed duration ({slothplayer.maxSongPlayTime} minutes). Stoping...")
                     
@@ -133,24 +140,28 @@ if __name__ == '__main__':
 
                     slothplayer.stop()
 
-
+                logging.debug('if slothplayer.npressed == True:')
                 if slothplayer.npressed == True:
                     slothplayer.npressed = False
                     horizontalLine()
                     printColor("Next song...")
                     slothplayer.stop()
                     break  # finishing the loop
-
+                
+                logging.debug('if slothplayer.ppressed == True:')
                 if slothplayer.ppressed == True:
                     slothplayer.ppressed = False
                     horizontalLine()
                     printColor("Pause... Press Enter to continue")
                     horizontalLine()
                     slothplayer.pause()
+                    pause_start_time = time.time()
                     input()
+                    pause_duration = time.time() - pause_start_time
+                    songStartTime += pause_duration # offset music time by time spent in pause
                     slothplayer.resume()
                     
-
+                logging.debug('state = slothplayer.get_state()')
                 state = slothplayer.get_state()
                 # print(state)
 
