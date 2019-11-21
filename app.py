@@ -3,7 +3,9 @@ import threading
 from kbhit import KBHit
 from colorama import Fore, Back, Style, init
 from slothplayer import printColor, SlothPlayer
+import logging
 
+logging.basicConfig(level=logging.DEBUG)
 
 def horizontalLine():
     printColor("--------------------------------")
@@ -79,11 +81,14 @@ if __name__ == '__main__':
 
         while True: # main loop (each song)
 
+            logging.debug('In main loop')
             horizontalLine()
 
             song = random.choice(slothplayer.songfiles)
 
+            logging.debug('Fetching song title')
             song_title = slothplayer.play(song)
+            logging.debug('Fetching song title... done')
 
             playing = set([1,2,3,4])
             
@@ -108,14 +113,15 @@ if __name__ == '__main__':
             if song_title == "":
                 printColor(f"Playing: {song} Length: {mm:00.0f}:{ss:00.0f}", "green")
             else:
-            printColor(f"Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}", "green")
+                printColor(f"Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}", "green")
                 printColor(song, "green")
 
             printColor("Press (n) to skip, (p) to pause, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
 
-
+            logging.debug('Playing, waiting for user input')
             while True: # loop while playing, waiting for user input
 
+                
                 # stop song if it is too long
                 if time.time() - songStartTime > slothplayer.maxSongPlayTime * 60:
                     printColor(f"Song exceeded max allowed duration ({slothplayer.maxSongPlayTime} minutes). Stoping...")
@@ -149,6 +155,8 @@ if __name__ == '__main__':
                 # print(state)
 
                 if state not in playing: # if the song is finished
+
+                    logging.debug('State not in playing')
 
                     songsPlayed += 1 # increase counter of songs played
 
