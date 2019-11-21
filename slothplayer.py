@@ -25,7 +25,7 @@ def printColor(text, argcolor = "white"):
 class SlothPlayer():
 
     def __init__(self, file):
-        self.instance=vlc.Instance("--novideo",  "--quiet")
+        self.instance = vlc.Instance("--novideo",  "--quiet")
         self.player = self.instance.media_player_new()
         self.npressed = False
         self.ppressed = False
@@ -99,8 +99,13 @@ class SlothPlayer():
 
     def play(self, song):
         #movie is the YouTube or a local URL
+
+        self.instance = vlc.Instance("--novideo",  "--quiet")
+        self.player = self.instance.media_player_new()
+
         instance = self.instance
         player = self.player
+
 
         media = instance.media_new(song)
         media_list = instance.media_list_new([song]) #A list of one song
@@ -111,7 +116,7 @@ class SlothPlayer():
         if 'youtube.com' in song:
             song_title = html.unescape(YouTube(song).title)
         else:
-            song_title = song
+            song_title = ""
 
         #Create a new MediaListPlayer instance and associate the player and playlist with it
         list_player =  instance.media_list_player_new()

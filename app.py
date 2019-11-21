@@ -82,6 +82,7 @@ if __name__ == '__main__':
             horizontalLine()
 
             song = random.choice(slothplayer.songfiles)
+
             song_title = slothplayer.play(song)
 
             playing = set([1,2,3,4])
@@ -104,7 +105,11 @@ if __name__ == '__main__':
             # the song has loaded at this point
             songStartTime = time.time()
             
+            if song_title == "":
+                printColor(f"Playing: {song} Length: {mm:00.0f}:{ss:00.0f}", "green")
+            else:
             printColor(f"Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}", "green")
+                printColor(song, "green")
 
             printColor("Press (n) to skip, (p) to pause, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
 
