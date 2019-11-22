@@ -38,6 +38,7 @@ def thread_keyboard(slothplayer):
             elif keyPressed == 'q':
                 horizontalLine()
                 print("Goodbye", Fore.WHITE)
+                printColor(f"Run Time: {time.strftime('%H:%M:%S', time.gmtime(time.time()-slothplayer.init_time))}")
                 os._exit(1)
             elif keyPressed == 'p':
                 config.ppressed  = True
@@ -69,6 +70,9 @@ def initialize_player(config_file, auto_open=True):
     printColor("Loading Config...")
     horizontalLine()
     slothplayer = SlothPlayer(config_file)
+
+    printColor(f"Start Time: {time.strftime('%H:%M:%S', time.localtime(slothplayer.init_time))}")
+    horizontalLine()
 
     while True:
         try:

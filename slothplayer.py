@@ -1,5 +1,6 @@
 from colorama import Fore, Back, Style, init
 import vlc
+import time
 from pytube import YouTube, Playlist
 from pathlib import Path
 import os
@@ -32,6 +33,7 @@ class SlothPlayer():
         self.npressed = False
         self.ppressed = False
         self.songs_played = 0
+        self.init_time = time.time()
         self.refreshFrequency = 10 #Hz
 
 
