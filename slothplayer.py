@@ -30,6 +30,7 @@ class SlothPlayer():
         self.player = self.instance.media_player_new()
         self.npressed = False
         self.ppressed = False
+        self.songs_played = 0
         self.refreshFrequency = 10 #Hz
 
 
@@ -54,18 +55,14 @@ class SlothPlayer():
 
 
 
-    def loadconfig(self, file, auto_open = True):
+    def loadconfig(self, file):
 
-        while True:
-            try:
-                with open(file, encoding='utf-8') as config_file:
-                    data = hjson.load(config_file)
-                    break
-            except IOError:
-                printColor("The configuration couldn't be loaded, please check the syntax of config.txt. Press any button when ready")
-                if auto_open:
-                    os.startfile("config.txt")
-                input()
+        try:
+            with open(file, encoding='utf-8') as config_file:
+                data = hjson.load(config_file)
+                
+        except IOError:
+            raise IOError("Couldn't open file")
 
         self.localMusicFolders = data['localMusicFolders']
         self.localMusicFoldersActive = data['localMusicFoldersActive']
@@ -77,6 +74,7 @@ class SlothPlayer():
         self.interval = data['interval']
         self.songfiles = self.__fetchsongs()
         
+        return True
 
     def __fetchsongs(self):
         

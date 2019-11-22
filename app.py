@@ -46,6 +46,53 @@ def thread_keyboard(config):
         time.sleep(0.2)
 
 
+def initialize_player(config_file, auto_open=True):
+    
+    init()
+    printColor('''                                                                                                                                                                                                                                                             
+   _____ _       _   _       _____  _                       
+  / ____| |     | | | |     |  __ \| |                      
+ | (___ | | ___ | |_| |__   | |__) | | __ _ _   _  ___ _ __ 
+  \___ \| |/ _ \| __| '_ \  |  ___/| |/ _` | | | |/ _ \ '__|
+  ____) | | (_) | |_| | | | | |    | | (_| | |_| |  __/ |   
+ |_____/|_|\___/ \__|_| |_| |_|    |_|\__,_|\__, |\___|_|   
+                                             __/ |          
+                                            |___/                          
+ v1-beta
+    ''', "magenta")
+
+
+
+    horizontalLine()
+    printColor("Loading Config...")
+    horizontalLine()
+    slothplayer = SlothPlayer()
+
+    while True:
+        try:
+            slothplayer.loadconfig(config_file)
+            slothplayer.printconfig()
+
+            x = threading.Thread(target=thread_keyboard, args=(slothplayer,), daemon=True)
+            x.start()
+
+            break
+
+
+        except:
+            printColor("The configuration couldn't be loaded, please check the syntax of config.txt. Press any button when ready")
+            if auto_open == True:
+                os.startfile("config.txt")
+                input()
+            else:
+                raise IOError("Couldn't open file")
+                
+
+
+    return slothplayer
+
+    
+
 def play_song():
     pass
 
@@ -62,36 +109,9 @@ def pause_program():
 
 if __name__ == '__main__':
 
-    init()
-
     try:
 
-        printColor('''                                                                                                                                                                                                                                                             
-   _____ _       _   _       _____  _                       
-  / ____| |     | | | |     |  __ \| |                      
- | (___ | | ___ | |_| |__   | |__) | | __ _ _   _  ___ _ __ 
-  \___ \| |/ _ \| __| '_ \  |  ___/| |/ _` | | | |/ _ \ '__|
-  ____) | | (_) | |_| | | | | |    | | (_| | |_| |  __/ |   
- |_____/|_|\___/ \__|_| |_| |_|    |_|\__,_|\__, |\___|_|   
-                                             __/ |          
-                                            |___/                          
- v1-beta
-        ''', "magenta")
-
-
-
-        horizontalLine()
-        printColor("Loading Config...")
-        horizontalLine()
-        slothplayer = SlothPlayer()
-        slothplayer.loadconfig("config.txt")
-
-        slothplayer.printconfig()
-
-        x = threading.Thread(target=thread_keyboard, args=(slothplayer,), daemon=True)
-        x.start()
-
-        songsPlayed = 0
+        slothplayer = initialize_player("config.txt")
 
         while True: # main loop (each song)
 
@@ -183,9 +203,9 @@ if __name__ == '__main__':
 
                     logging.debug('State not in playing')
 
-                    songsPlayed += 1 # increase counter of songs played
+                    slothplayer.songs_played += 1 # increase counter of songs played
 
-                    if songsPlayed < slothplayer.consecutiveReadings:
+                    if slothplayer.songs_played < slothplayer.consecutiveReadings:
                         #read another song
                         break
                     else:
@@ -225,7 +245,7 @@ if __name__ == '__main__':
                         print(' ')
 
                         # end of cycle, reset number of songs played
-                        songsPlayed = 0
+                        slothplayer.songs_played = 0
 
                         break
 
