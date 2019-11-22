@@ -12,14 +12,14 @@ def load_bad_config():
 
 
 def test_good_config(load_good_config):
-    sloth = SlothPlayer()
-    sloth.loadconfig(load_good_config)
+    sloth = SlothPlayer(load_good_config)
+    sloth.loadconfig()
     assert sloth.interval == [4,7]
 
 def test_bad_config(load_bad_config):
-    sloth = SlothPlayer()
+    sloth = SlothPlayer(load_bad_config)
     with pytest.raises(IOError):
-        sloth.loadconfig(load_bad_config)
+        sloth.loadconfig()
 
 from app import initialize_player
 def test_initialize_player_good(load_good_config):

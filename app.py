@@ -7,11 +7,13 @@ import logging
 
 #logging.basicConfig(level=logging.DEBUG)
 
+CONFIGURATION_FILE = "config.txt"
+
 def horizontalLine():
     printColor("--------------------------------")
 
 
-def thread_keyboard(config):
+def thread_keyboard(slothplayer):
 
     kb = KBHit()
 
@@ -20,19 +22,19 @@ def thread_keyboard(config):
             keyPressed = kb.getch()
 
             if keyPressed == 'n':
-                config.npressed  = True
+                slothplayer.npressed  = True
 
             elif keyPressed == 'c':
                 horizontalLine()
                 printColor("Opening configuration file")
                 horizontalLine()
-                os.startfile("config.txt")
+                os.startfile(slothplayer.configuration_file)
             elif keyPressed == 'r':
                 horizontalLine()
                 printColor("Loading Config...")
                 horizontalLine()
-                config.loadconfig("config.txt")
-                config.printconfig()
+                slothplayer.loadconfig()
+                slothplayer.printconfig()
             elif keyPressed == 'q':
                 horizontalLine()
                 print("Goodbye", Fore.WHITE)
@@ -49,7 +51,7 @@ def thread_keyboard(config):
 def initialize_player(config_file, auto_open=True):
     
     init()
-    printColor('''                                                                                                                                                                                                                                                             
+    printColor(r'''                                                                                                                                                                                                                                                             
    _____ _       _   _       _____  _                       
   / ____| |     | | | |     |  __ \| |                      
  | (___ | | ___ | |_| |__   | |__) | | __ _ _   _  ___ _ __ 
@@ -66,11 +68,11 @@ def initialize_player(config_file, auto_open=True):
     horizontalLine()
     printColor("Loading Config...")
     horizontalLine()
-    slothplayer = SlothPlayer()
+    slothplayer = SlothPlayer(config_file)
 
     while True:
         try:
-            slothplayer.loadconfig(config_file)
+            slothplayer.loadconfig()
             slothplayer.printconfig()
 
             x = threading.Thread(target=thread_keyboard, args=(slothplayer,), daemon=True)
@@ -82,10 +84,10 @@ def initialize_player(config_file, auto_open=True):
         except:
             printColor("The configuration couldn't be loaded, please check the syntax of config.txt. Press any button when ready")
             if auto_open == True:
-                os.startfile("config.txt")
+                os.startfile(config_file)
                 input()
             else:
-                raise IOError("Couldn't open file")
+                raise IOError("Couldn't open the configuration file")
                 
 
 
@@ -109,9 +111,10 @@ def pause_program():
 
 if __name__ == '__main__':
 
+
     try:
 
-        slothplayer = initialize_player("config.txt")
+        slothplayer = initialize_player(CONFIGURATION_FILE)
 
         while True: # main loop (each song)
 
@@ -156,7 +159,7 @@ if __name__ == '__main__':
                 printColor(f"Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}", "green")
                 printColor(song, "green")
 
-            printColor("Press (n) to skip, (p) to pause, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
+            printColor("Press (n) to skip, (p) to pause, (c) to open " + slothplayer.configuration_file +  ", (r) to reload configuration and (q) to quit", "pink")
 
             logging.debug('Playing, waiting for user input')
             while True: # loop while playing, waiting for user input
@@ -213,7 +216,7 @@ if __name__ == '__main__':
                         sleepInterval = random.randint(slothplayer.interval[0],slothplayer.interval[1])
 
                         printColor(f'Sleeping for {sleepInterval} minutes')
-                        printColor("Press (n) to skip, (p) to pause, (c) to open config.txt, (r) to reload configuration and (q) to quit", "pink")
+                        printColor("Press (n) to skip, (p) to pause, (c) to open " + slothplayer.configuration_file +  ", (r) to reload configuration and (q) to quit", "pink")
 
 
                         for i in range(sleepInterval*60*slothplayer.refreshFrequency,0,-1):
