@@ -2,15 +2,15 @@ import random, os, time, sys, math
 import threading
 from kbhit import KBHit
 from colorama import Fore, Back, Style, init
-from slothplayer import printColor, SlothPlayer
+from slothplayer import print_color, SlothPlayer
 import logging
 
 #logging.basicConfig(level=logging.DEBUG)
 
 CONFIGURATION_FILE = "config.txt"
 
-def horizontalLine():
-    printColor("--------------------------------")
+def horizonta_line():
+    print_color("--------------------------------")
 
 
 def thread_keyboard(slothplayer):
@@ -19,28 +19,29 @@ def thread_keyboard(slothplayer):
 
     while True:
         if kb.kbhit():
-            keyPressed = kb.getch()
+            key_pressed = kb.getch()
 
-            if keyPressed == 'n':
+            if key_pressed == 'n':
                 slothplayer.npressed  = True
 
-            elif keyPressed == 'c':
-                horizontalLine()
-                printColor("Opening configuration file")
-                horizontalLine()
+            elif key_pressed == 'c':
+                horizonta_line()
+                print_color("Opening configuration file")
+                horizonta_line()
                 os.startfile(slothplayer.configuration_file)
-            elif keyPressed == 'r':
-                horizontalLine()
-                printColor("Loading Config...")
-                horizontalLine()
+            elif key_pressed == 'r':
+                horizonta_line()
+                print_color("Loading Config...")
+                horizonta_line()
                 slothplayer.loadconfig()
                 slothplayer.printconfig()
-            elif keyPressed == 'q':
-                horizontalLine()
+            elif key_pressed == 'q':
+                horizonta_line()
                 print("Goodbye", Fore.WHITE)
-                printColor(f"Run Time: {time.strftime('%H:%M:%S', time.gmtime(time.time()-slothplayer.init_time))}")
+                print_color(f"Run Time: {time.strftime('%H:%M:%S', time.gmtime(time.time()-slothplayer.init_time))}")
+                input()
                 os._exit(1)
-            elif keyPressed == 'p':
+            elif key_pressed == 'p':
                 slothplayer.ppressed  = True
             else:
                 pass
@@ -52,7 +53,7 @@ def thread_keyboard(slothplayer):
 def initialize_player(config_file, auto_open=True):
     
     init()
-    printColor(r'''                                                                                                                                                                                                                                                             
+    print_color(r'''                                                                                                                                                                                                                                                             
    _____ _       _   _       _____  _                       
   / ____| |     | | | |     |  __ \| |                      
  | (___ | | ___ | |_| |__   | |__) | | __ _ _   _  ___ _ __ 
@@ -66,13 +67,13 @@ def initialize_player(config_file, auto_open=True):
 
 
 
-    horizontalLine()
-    printColor("Loading Config...")
-    horizontalLine()
+    horizonta_line()
+    print_color("Loading Config...")
+    horizonta_line()
     slothplayer = SlothPlayer(config_file)
 
-    printColor(f"Start Time: {time.strftime('%H:%M:%S', time.localtime(slothplayer.init_time))}")
-    horizontalLine()
+    print_color(f"Start Time: {time.strftime('%H:%M:%S', time.localtime(slothplayer.init_time))}")
+    horizonta_line()
 
     while True:
         try:
@@ -86,7 +87,7 @@ def initialize_player(config_file, auto_open=True):
 
 
         except:
-            printColor("The configuration couldn't be loaded, please check the syntax of config.txt. Press any button when ready")
+            print_color("The configuration couldn't be loaded, please check the syntax of config.txt. Press any button when ready")
             if auto_open == True:
                 os.startfile(config_file)
                 input()
@@ -126,19 +127,19 @@ def play_song(slothplayer, song):
             break
 
     if i == 10:
-        printColor("Song couldn't be loaded, next...")
+        print_color("Song couldn't be loaded, next...")
         return False
 
     # the song has loaded at this point
     songStartTime = time.time()
     
     if song_title == "":
-        printColor(f"Playing: {song} Length: {mm:00.0f}:{ss:00.0f}", "green")
+        print_color(f"Playing: {song} Length: {mm:00.0f}:{ss:00.0f}", "green")
     else:
-        printColor(f"Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}", "green")
-        printColor(song, "green")
+        print_color(f"Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}", "green")
+        print_color(song, "green")
 
-    printColor("Press (n) to skip, (p) to pause, (c) to open " + slothplayer.configuration_file +  ", (r) to reload configuration and (q) to quit", "pink")
+    print_color("Press (n) to skip, (p) to pause, (c) to open " + slothplayer.configuration_file +  ", (r) to reload configuration and (q) to quit", "pink")
 
     logging.debug('Playing, waiting for user input')
 
@@ -146,7 +147,7 @@ def play_song(slothplayer, song):
         # stop song if it is too long
         logging.debug('stop song if it is too long')
         if time.time() - songStartTime > slothplayer.maxSongPlayTime * 60:
-            printColor(f"Song exceeded max allowed duration ({slothplayer.maxSongPlayTime} minutes). Stoping...")
+            print_color(f"Song exceeded max allowed duration ({slothplayer.maxSongPlayTime} minutes). Stoping...")
             
             #fade out
             for i in range(100,0,-5):
@@ -158,17 +159,17 @@ def play_song(slothplayer, song):
         logging.debug('if slothplayer.npressed == True:')
         if slothplayer.npressed == True:
             slothplayer.npressed = False
-            horizontalLine()
-            printColor("Next song...")
+            horizonta_line()
+            print_color("Next song...")
             slothplayer.stop()
             break  # finishing the loop
         
         logging.debug('if slothplayer.ppressed == True:')
         if slothplayer.ppressed == True:
             slothplayer.ppressed = False
-            horizontalLine()
-            printColor("Pause... Press Enter to continue")
-            horizontalLine()
+            horizonta_line()
+            print_color("Pause... Press Enter to continue")
+            horizonta_line()
             slothplayer.pause()
 
             pause_duration = pause_program()
@@ -185,6 +186,8 @@ def play_song(slothplayer, song):
             logging.debug('State not in playing')
             return time.time()-songStartTime
 
+        time.sleep(1.0/slothplayer.refreshFrequency)
+
 
 
 def play_silence(slothplayer, sleepInterval):
@@ -195,17 +198,17 @@ def play_silence(slothplayer, sleepInterval):
                         
         if slothplayer.npressed == True:
             slothplayer.npressed = False
-            horizontalLine()
-            printColor("Next song...")
+            horizonta_line()
+            print_color("Next song...")
             slothplayer.stop()
             break  # finishing the loop
 
 
         if slothplayer.ppressed == True:
             slothplayer.ppressed = False
-            horizontalLine()
-            printColor("Pause... Press Enter to continue")
-            horizontalLine()
+            horizonta_line()
+            print_color("Pause... Press Enter to continue")
+            horizonta_line()
 
             pause_program()
 
@@ -237,7 +240,7 @@ if __name__ == '__main__':
         while True: # main loop (each song)
 
             logging.debug('In main loop')
-            horizontalLine()
+            horizonta_line()
 
             song = random.choice(slothplayer.songfiles)
 
@@ -252,8 +255,8 @@ if __name__ == '__main__':
             else:
                 #wait the required sleep interval
                 sleepInterval = random.randint(slothplayer.interval[0],slothplayer.interval[1])
-                printColor(f'Sleeping for {sleepInterval} minutes')
-                printColor("Press (n) to skip, (p) to pause, (c) to open " + slothplayer.configuration_file +  ", (r) to reload configuration and (q) to quit", "pink")
+                print_color(f'Sleeping for {sleepInterval} minutes')
+                print_color("Press (n) to skip, (p) to pause, (c) to open " + slothplayer.configuration_file +  ", (r) to reload configuration and (q) to quit", "pink")
 
                 play_silence(slothplayer, sleepInterval)
                 print(' ')
@@ -266,9 +269,9 @@ if __name__ == '__main__':
 
     except BaseException: # to keep the command window open upon exit (in case of error for example)
         import sys
-        printColor(sys.exc_info()[0])
+        print_color(sys.exc_info()[0])
         import traceback
-        printColor(traceback.format_exc())
+        print_color(traceback.format_exc())
 
     finally:
         print("Press Enter to continue ...", Fore.WHITE)

@@ -7,7 +7,7 @@ import os
 import html
 import hjson
 
-def printColor(text, argcolor = "white"):
+def print_color(text, argcolor = "white"):
 
     if argcolor == "white":
         color = Fore.WHITE
@@ -49,12 +49,12 @@ class SlothPlayer():
 
     def printconfig(self):
 
-        printColor(f"Local Folders: {self.localMusicFolders}")
-        printColor(f"Active: {self.localMusicFoldersActive}")
-        printColor(f"Youtube Playlists: {self.youtubePlaylists}")
-        printColor(f"Active: {self.youtubePlaylistsActive}")
-        printColor(f"Silence Interval: {self.interval}")
-        printColor(f"{len(self.songfiles)} music files found.")
+        print_color(f"Local Folders: {self.localMusicFolders}")
+        print_color(f"Active: {self.localMusicFoldersActive}")
+        print_color(f"Youtube Playlists: {self.youtubePlaylists}")
+        print_color(f"Active: {self.youtubePlaylistsActive}")
+        print_color(f"Silence Interval: {self.interval}")
+        print_color(f"{len(self.songfiles)} music files found.")
 
 
 
