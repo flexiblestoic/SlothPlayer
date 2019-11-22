@@ -1,4 +1,4 @@
-import random, os, time, sys
+import random, os, time, sys, math
 import threading
 from kbhit import KBHit
 from colorama import Fore, Back, Style, init
@@ -91,7 +91,7 @@ def initialize_player(config_file, auto_open=True):
                 os.startfile(config_file)
                 input()
             else:
-                raise IOError("Couldn't open the configuration file")
+                raise IOError("Couldn't open the configuration file or Youtube playlist")
                 
 
 
@@ -189,7 +189,9 @@ def play_song(slothplayer, song):
 
 def play_silence(slothplayer, sleepInterval):
 
-    for i in range(sleepInterval*60*slothplayer.refreshFrequency,0,-1):
+    start_silence_time = time.time()
+
+    for i in range(math.floor(sleepInterval*60*slothplayer.refreshFrequency),0,-1):
                         
         if slothplayer.npressed == True:
             slothplayer.npressed = False
@@ -213,6 +215,8 @@ def play_silence(slothplayer, sleepInterval):
             sys.stdout.flush()
 
         time.sleep(1.0/slothplayer.refreshFrequency)
+
+    return time.time()-start_silence_time
 
 
 def pause_program():
