@@ -70,7 +70,8 @@ if __name__ == '__main__':
         horizontalLine()
         printColor("Loading Config...")
         horizontalLine()
-        slothplayer = SlothPlayer("config.txt")
+        slothplayer = SlothPlayer()
+        slothplayer.loadconfig("config.txt")
 
         slothplayer.printconfig()
 

@@ -24,7 +24,7 @@ def printColor(text, argcolor = "white"):
 
 class SlothPlayer():
 
-    def __init__(self, file):
+    def __init__(self):
         #self.instance = vlc.Instance("--novideo",  "--quiet")
         self.instance = vlc.Instance("--novideo",  "--quiet")
         self.player = self.instance.media_player_new()
@@ -32,7 +32,6 @@ class SlothPlayer():
         self.ppressed = False
         self.refreshFrequency = 10 #Hz
 
-        self.loadconfig(file)
 
     
     def getPlaylistLinks(self, url):
@@ -55,16 +54,17 @@ class SlothPlayer():
 
 
 
-    def loadconfig(self, file):
+    def loadconfig(self, file, auto_open = True):
 
         while True:
             try:
                 with open(file, encoding='utf-8') as config_file:
                     data = hjson.load(config_file)
                     break
-            except:
+            except IOError:
                 printColor("The configuration couldn't be loaded, please check the syntax of config.txt. Press any button when ready")
-                os.startfile("config.txt")
+                if auto_open:
+                    os.startfile("config.txt")
                 input()
 
         self.localMusicFolders = data['localMusicFolders']
