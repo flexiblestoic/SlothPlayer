@@ -62,8 +62,8 @@ def initialize_player(config_file, auto_open=True):
  |_____/|_|\___/ \__|_| |_| |_|    |_|\__,_|\__, |\___|_|   
                                              __/ |          
                                             |___/                          
- v1-beta
-    ''', "magenta")
+ v1
+    ''', "green")
 
 
 
@@ -206,6 +206,7 @@ def play_silence(slothplayer, sleepInterval):
 
         if slothplayer.ppressed == True:
             slothplayer.ppressed = False
+            print("")
             horizonta_line()
             print_color("Pause... Press Enter to continue")
             horizonta_line()
@@ -214,7 +215,7 @@ def play_silence(slothplayer, sleepInterval):
 
 
         if i%(60*slothplayer.refreshFrequency) == 0:
-            sys.stdout.write(str(int(i/(60*slothplayer.refreshFrequency)))+' ')
+            sys.stdout.write(' ' + str(int(i/(60*slothplayer.refreshFrequency))))
             sys.stdout.flush()
 
         time.sleep(1.0/slothplayer.refreshFrequency)
@@ -264,7 +265,7 @@ if __name__ == '__main__':
                 # end of cycle, reset number of songs played
                 slothplayer.songs_played = 0
 
-        time.sleep(1.0/slothplayer.refreshFrequency)
+            time.sleep(1.0/slothplayer.refreshFrequency)
 
 
     except BaseException: # to keep the command window open upon exit (in case of error for example)

@@ -42,7 +42,7 @@ def test_play_song_good(load_good_config):
     slothplayer = SlothPlayer(load_good_config)
     slothplayer.loadconfig()
     result = play_song(slothplayer, "https://www.youtube.com/watch?v=PCicKydX5GE")
-    assert abs(result - 3) < 0.5
+    assert abs(result - 3) < 1
 
 
 def test_play_song_bad(load_good_config):
