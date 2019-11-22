@@ -46,6 +46,19 @@ def thread_keyboard(config):
         time.sleep(0.2)
 
 
+def play_song():
+    pass
+
+def play_silence():
+    pass
+
+def pause_program():
+    
+    pause_start_time = time.time()
+    input()
+    pause_duration = time.time() - pause_start_time
+
+    return pause_duration
 
 if __name__ == '__main__':
 
@@ -156,9 +169,9 @@ if __name__ == '__main__':
                     printColor("Pause... Press Enter to continue")
                     horizontalLine()
                     slothplayer.pause()
-                    pause_start_time = time.time()
-                    input()
-                    pause_duration = time.time() - pause_start_time
+
+                    pause_duration = pause_program()
+
                     songStartTime += pause_duration # offset music time by time spent in pause
                     slothplayer.resume()
                     
@@ -191,6 +204,16 @@ if __name__ == '__main__':
                                 printColor("Next song...")
                                 slothplayer.stop()
                                 break  # finishing the loop
+
+
+                            if slothplayer.ppressed == True:
+                                slothplayer.ppressed = False
+                                horizontalLine()
+                                printColor("Pause... Press Enter to continue")
+                                horizontalLine()
+
+                                pause_program()
+
 
 
                             if i%(60*slothplayer.refreshFrequency) == 0:
