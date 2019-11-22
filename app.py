@@ -248,7 +248,7 @@ if __name__ == '__main__':
 
             if slothplayer.songs_played < slothplayer.consecutiveReadings:
                 #read another song
-                break
+                continue
             else:
                 #wait the required sleep interval
                 sleepInterval = random.randint(slothplayer.interval[0],slothplayer.interval[1])
@@ -260,7 +260,6 @@ if __name__ == '__main__':
 
                 # end of cycle, reset number of songs played
                 slothplayer.songs_played = 0
-                break
 
         time.sleep(1.0/slothplayer.refreshFrequency)
 
