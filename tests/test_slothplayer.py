@@ -1,5 +1,5 @@
 import pytest
-from slothplayer import SlothPlayer
+from slothplayer.slothplayer import SlothPlayer
 
 @pytest.fixture
 def load_good_config():
@@ -21,7 +21,7 @@ def test_bad_config(load_bad_config):
     with pytest.raises(IOError):
         sloth.loadconfig()
 
-from app import initialize_player
+from slothplayer.app import initialize_player
 def test_initialize_player_good(load_good_config):
     sloth = initialize_player(load_good_config, False)
     assert sloth.interval == [4,7]
@@ -30,14 +30,14 @@ def test_initialize_player_bad(load_bad_config):
         with pytest.raises(IOError):
             sloth = initialize_player(load_bad_config, False)
 
-from app import play_silence
+from slothplayer.app import play_silence
 def test_play_silence(load_good_config):
     slothplayer = SlothPlayer(load_good_config)
     slothplayer.loadconfig()
     actual_silence = play_silence(slothplayer, 0.03333) # 2 seconds
     assert abs(actual_silence - 2) < 0.2
 
-from app import play_song
+from slothplayer.app import play_song
 def test_play_song_good(load_good_config):
     slothplayer = SlothPlayer(load_good_config)
     slothplayer.loadconfig()

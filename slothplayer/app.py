@@ -1,8 +1,8 @@
 import random, os, time, sys, math
 import threading
-from kbhit import KBHit
+from slothplayer.kbhit import KBHit
 from colorama import Fore, Back, Style, init
-from slothplayer import print_color, SlothPlayer
+from slothplayer.slothplayer import print_color, SlothPlayer
 import logging
 
 #logging.basicConfig(level=logging.DEBUG)
@@ -231,7 +231,7 @@ def pause_program():
 
     return pause_duration
 
-if __name__ == '__main__':
+def app():
 
 
     try:
@@ -277,3 +277,7 @@ if __name__ == '__main__':
     finally:
         print("Press Enter to continue ...", Fore.WHITE)
         input()
+
+
+if __name__ == "__main__":
+    app()

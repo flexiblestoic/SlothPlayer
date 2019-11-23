@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['app.py'],
+a = Analysis(['play.py'],
              pathex=['C:\\Users\\utilisateur\\Dropbox\\Hobbies\\slothplayer'],
              binaries=[],
              datas=[('./libvlc.dll', '.'), ('./axvlc.dll', '.'), ('./libvlccore.dll', '.'), ('./npvlc.dll', '.'), ('./config.txt', '.')],
