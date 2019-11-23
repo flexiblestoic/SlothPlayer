@@ -2,7 +2,9 @@ from invoke import task
 
 @task
 def build(c, docs=False):
-    c.run("pyinstaller --clean --noconfirm  app.spec")
+    #c.run(r"rmdir /q /s build")
+    #c.run(r"rmdir /q /s dist")
+    c.run("pyinstaller --clean --noconfirm  play.spec")
     
 
 @task
@@ -15,9 +17,9 @@ def env(c, docs=False):
 
 @task
 def doc(c, docs=False):
-    c.run(r"rmdir /q /s html")
-    c.run(r"pdoc --html --force slothplayer")
-    c.run(r"pdoc --html --force tests")
+    c.run(r"rmdir /q /s docs")
+    c.run(r"pdoc --html -o docs --force slothplayer")
+    c.run(r"pdoc --html -o docs --force tests")
 
 
     

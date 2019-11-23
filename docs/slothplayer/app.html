@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>slothplayer.app API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>slothplayer.app</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import random, os, time, sys, math
+import threading
+from slothplayer.kbhit import KBHit
+from colorama import Fore, Back, Style, init
+from slothplayer.slothplayer import print_color, SlothPlayer
+import logging
+
+#logging.basicConfig(level=logging.DEBUG)
+
+CONFIGURATION_FILE = &#34;config.txt&#34;
+
+def horizonta_line():
+    print_color(&#34;--------------------------------&#34;)
+
+
+def thread_keyboard(slothplayer):
+
+    kb = KBHit()
+
+    while True:
+        if kb.kbhit():
+            key_pressed = kb.getch()
+
+            if key_pressed == &#39;n&#39;:
+                slothplayer.npressed  = True
+
+            elif key_pressed == &#39;c&#39;:
+                horizonta_line()
+                print_color(&#34;Opening configuration file&#34;)
+                horizonta_line()
+                os.startfile(slothplayer.configuration_file)
+            elif key_pressed == &#39;r&#39;:
+                horizonta_line()
+                print_color(&#34;Loading Config...&#34;)
+                horizonta_line()
+                slothplayer.loadconfig()
+                slothplayer.printconfig()
+            elif key_pressed == &#39;q&#39;:
+                horizonta_line()
+                print_color(f&#34;Run Time: {time.strftime(&#39;%H:%M:%S&#39;, time.gmtime(time.time()-slothplayer.init_time))}&#34;)
+                print(&#34; Goodbye&#34;, Fore.WHITE)
+                input()
+                os._exit(1)
+            elif key_pressed == &#39;p&#39;:
+                slothplayer.ppressed  = True
+            else:
+                pass
+
+
+        time.sleep(0.2)
+
+
+def initialize_player(config_file, auto_open=True):
+    
+    init()
+    print_color(r&#39;&#39;&#39;                                                                                                                                                                                                                                                             
+   _____ _       _   _       _____  _                       
+  / ____| |     | | | |     |  __ \| |                      
+ | (___ | | ___ | |_| |__   | |__) | | __ _ _   _  ___ _ __ 
+  \___ \| |/ _ \| __| &#39;_ \  |  ___/| |/ _` | | | |/ _ \ &#39;__|
+  ____) | | (_) | |_| | | | | |    | | (_| | |_| |  __/ |   
+ |_____/|_|\___/ \__|_| |_| |_|    |_|\__,_|\__, |\___|_|   
+                                             __/ |          
+                                            |___/                          
+ v1
+    &#39;&#39;&#39;, &#34;green&#34;)
+
+
+
+    horizonta_line()
+    print_color(&#34;Loading Config...&#34;)
+    horizonta_line()
+    slothplayer = SlothPlayer(config_file)
+
+    print_color(f&#34;Start Time: {time.strftime(&#39;%H:%M:%S&#39;, time.localtime(slothplayer.init_time))}&#34;)
+    horizonta_line()
+
+    while True:
+        try:
+            slothplayer.loadconfig()
+            slothplayer.printconfig()
+
+            x = threading.Thread(target=thread_keyboard, args=(slothplayer,), daemon=True)
+            x.start()
+
+            break
+
+
+        except:
+            print_color(&#34;The configuration couldn&#39;t be loaded, please check the syntax of config.txt. Press any button when ready&#34;)
+            if auto_open == True:
+                os.startfile(config_file)
+                input()
+            else:
+                raise IOError(&#34;Couldn&#39;t open the configuration file or Youtube playlist&#34;)
+                
+
+
+    return slothplayer
+
+    
+
+def play_song(slothplayer, song):
+
+    #Plays a song and return to main thread when the song is over or upon user intervention
+
+    logging.debug(&#39;Fetching song title&#39;)
+    try:
+        song_title = slothplayer.play(song)
+    except:
+        return False
+
+    
+    logging.debug(&#39;Fetching song title... done&#39;)
+
+    playing = set([1,2,3,4])
+    
+    # Song loading management
+    i = 0
+    while i &lt; 10:
+        time.sleep(1) #Give time to get going
+        duration = slothplayer.player.get_length() / 1000
+        mm, ss = divmod(duration, 60)
+        if mm+ss == 0: # means song not loaded
+            i = i+1
+        else:
+            break
+
+    if i == 10:
+        print_color(&#34;Song couldn&#39;t be loaded, next...&#34;)
+        return False
+
+    # the song has loaded at this point
+    songStartTime = time.time()
+    
+    if song_title == &#34;&#34;:
+        print_color(f&#34;Playing: {song} Length: {mm:00.0f}:{ss:00.0f}&#34;, &#34;green&#34;)
+    else:
+        print_color(f&#34;Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}&#34;, &#34;green&#34;)
+        print_color(song, &#34;green&#34;)
+
+    print_color(&#34;Press (n) to skip, (p) to pause, (c) to open &#34; + slothplayer.configuration_file +  &#34;, (r) to reload configuration and (q) to quit&#34;, &#34;pink&#34;)
+
+    logging.debug(&#39;Playing, waiting for user input&#39;)
+
+    while True: # loop while playing, waiting for user input
+        # stop song if it is too long
+        logging.debug(&#39;stop song if it is too long&#39;)
+        if time.time() - songStartTime &gt; slothplayer.maxSongPlayTime * 60:
+            print_color(f&#34;Song exceeded max allowed duration ({slothplayer.maxSongPlayTime} minutes). Stoping...&#34;)
+            
+            #fade out
+            for i in range(100,0,-5):
+                slothplayer.player.audio_set_volume(i)
+                time.sleep(0.5)
+
+            slothplayer.stop()
+
+        logging.debug(&#39;if slothplayer.npressed == True:&#39;)
+        if slothplayer.npressed == True:
+            slothplayer.npressed = False
+            horizonta_line()
+            print_color(&#34;Next song...&#34;)
+            slothplayer.stop()
+            break  # finishing the loop
+        
+        logging.debug(&#39;if slothplayer.ppressed == True:&#39;)
+        if slothplayer.ppressed == True:
+            slothplayer.ppressed = False
+            horizonta_line()
+            print_color(&#34;Pause... Press Enter to continue&#34;)
+            horizonta_line()
+            slothplayer.pause()
+
+            pause_duration = pause_program()
+
+            songStartTime += pause_duration # offset music time by time spent in pause
+            slothplayer.resume()
+            
+        logging.debug(&#39;state = slothplayer.get_state()&#39;)
+        state = slothplayer.get_state()
+        # print(state)
+
+        if state not in playing: # if the song is finished
+            
+            logging.debug(&#39;State not in playing&#39;)
+            return time.time()-songStartTime
+
+        time.sleep(1.0/slothplayer.refreshFrequency)
+
+
+
+def play_silence(slothplayer, sleepInterval):
+
+    start_silence_time = time.time()
+
+    for i in range(math.floor(sleepInterval*60*slothplayer.refreshFrequency),0,-1):
+                        
+        if slothplayer.npressed == True:
+            slothplayer.npressed = False
+            horizonta_line()
+            print_color(&#34;Next song...&#34;)
+            slothplayer.stop()
+            break  # finishing the loop
+
+
+        if slothplayer.ppressed == True:
+            slothplayer.ppressed = False
+            print(&#34;&#34;)
+            horizonta_line()
+            print_color(&#34;Pause... Press Enter to continue&#34;)
+            horizonta_line()
+
+            pause_program()
+
+
+        if i%(60*slothplayer.refreshFrequency) == 0:
+            sys.stdout.write(&#39; &#39; + str(int(i/(60*slothplayer.refreshFrequency))))
+            sys.stdout.flush()
+
+        time.sleep(1.0/slothplayer.refreshFrequency)
+
+    return time.time()-start_silence_time
+
+
+def pause_program():
+    
+    pause_start_time = time.time()
+    input()
+    pause_duration = time.time() - pause_start_time
+
+    return pause_duration
+
+def app():
+
+
+    try:
+
+        slothplayer = initialize_player(CONFIGURATION_FILE)
+
+        while True: # main loop (each song)
+
+            logging.debug(&#39;In main loop&#39;)
+            horizonta_line()
+
+            song = random.choice(slothplayer.songfiles)
+
+            if play_song(slothplayer, song):
+                slothplayer.songs_played += 1 # increase counter of songs played
+            else:
+                continue
+
+            if slothplayer.songs_played &lt; slothplayer.consecutiveReadings:
+                #read another song
+                continue
+            else:
+                #wait the required sleep interval
+                sleepInterval = random.randint(slothplayer.interval[0],slothplayer.interval[1])
+                print_color(f&#39;Sleeping for {sleepInterval} minutes&#39;)
+                print_color(&#34;Press (n) to skip, (p) to pause, (c) to open &#34; + slothplayer.configuration_file +  &#34;, (r) to reload configuration and (q) to quit&#34;, &#34;pink&#34;)
+
+                play_silence(slothplayer, sleepInterval)
+                print(&#39; &#39;)
+
+                # end of cycle, reset number of songs played
+                slothplayer.songs_played = 0
+
+            time.sleep(1.0/slothplayer.refreshFrequency)
+
+
+    except BaseException: # to keep the command window open upon exit (in case of error for example)
+        import sys
+        print_color(sys.exc_info()[0])
+        import traceback
+        print_color(traceback.format_exc())
+
+    finally:
+        print(&#34;Press Enter to continue ...&#34;, Fore.WHITE)
+        input()
+
+
+if __name__ == &#34;__main__&#34;:
+    app()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="slothplayer.app.app"><code class="name flex">
+<span>def <span class="ident">app</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def app():
+
+
+    try:
+
+        slothplayer = initialize_player(CONFIGURATION_FILE)
+
+        while True: # main loop (each song)
+
+            logging.debug(&#39;In main loop&#39;)
+            horizonta_line()
+
+            song = random.choice(slothplayer.songfiles)
+
+            if play_song(slothplayer, song):
+                slothplayer.songs_played += 1 # increase counter of songs played
+            else:
+                continue
+
+            if slothplayer.songs_played &lt; slothplayer.consecutiveReadings:
+                #read another song
+                continue
+            else:
+                #wait the required sleep interval
+                sleepInterval = random.randint(slothplayer.interval[0],slothplayer.interval[1])
+                print_color(f&#39;Sleeping for {sleepInterval} minutes&#39;)
+                print_color(&#34;Press (n) to skip, (p) to pause, (c) to open &#34; + slothplayer.configuration_file +  &#34;, (r) to reload configuration and (q) to quit&#34;, &#34;pink&#34;)
+
+                play_silence(slothplayer, sleepInterval)
+                print(&#39; &#39;)
+
+                # end of cycle, reset number of songs played
+                slothplayer.songs_played = 0
+
+            time.sleep(1.0/slothplayer.refreshFrequency)
+
+
+    except BaseException: # to keep the command window open upon exit (in case of error for example)
+        import sys
+        print_color(sys.exc_info()[0])
+        import traceback
+        print_color(traceback.format_exc())
+
+    finally:
+        print(&#34;Press Enter to continue ...&#34;, Fore.WHITE)
+        input()</code></pre>
+</details>
+</dd>
+<dt id="slothplayer.app.horizonta_line"><code class="name flex">
+<span>def <span class="ident">horizonta_line</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def horizonta_line():
+    print_color(&#34;--------------------------------&#34;)</code></pre>
+</details>
+</dd>
+<dt id="slothplayer.app.initialize_player"><code class="name flex">
+<span>def <span class="ident">initialize_player</span></span>(<span>config_file, auto_open=True)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initialize_player(config_file, auto_open=True):
+    
+    init()
+    print_color(r&#39;&#39;&#39;                                                                                                                                                                                                                                                             
+   _____ _       _   _       _____  _                       
+  / ____| |     | | | |     |  __ \| |                      
+ | (___ | | ___ | |_| |__   | |__) | | __ _ _   _  ___ _ __ 
+  \___ \| |/ _ \| __| &#39;_ \  |  ___/| |/ _` | | | |/ _ \ &#39;__|
+  ____) | | (_) | |_| | | | | |    | | (_| | |_| |  __/ |   
+ |_____/|_|\___/ \__|_| |_| |_|    |_|\__,_|\__, |\___|_|   
+                                             __/ |          
+                                            |___/                          
+ v1
+    &#39;&#39;&#39;, &#34;green&#34;)
+
+
+
+    horizonta_line()
+    print_color(&#34;Loading Config...&#34;)
+    horizonta_line()
+    slothplayer = SlothPlayer(config_file)
+
+    print_color(f&#34;Start Time: {time.strftime(&#39;%H:%M:%S&#39;, time.localtime(slothplayer.init_time))}&#34;)
+    horizonta_line()
+
+    while True:
+        try:
+            slothplayer.loadconfig()
+            slothplayer.printconfig()
+
+            x = threading.Thread(target=thread_keyboard, args=(slothplayer,), daemon=True)
+            x.start()
+
+            break
+
+
+        except:
+            print_color(&#34;The configuration couldn&#39;t be loaded, please check the syntax of config.txt. Press any button when ready&#34;)
+            if auto_open == True:
+                os.startfile(config_file)
+                input()
+            else:
+                raise IOError(&#34;Couldn&#39;t open the configuration file or Youtube playlist&#34;)
+                
+
+
+    return slothplayer</code></pre>
+</details>
+</dd>
+<dt id="slothplayer.app.pause_program"><code class="name flex">
+<span>def <span class="ident">pause_program</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pause_program():
+    
+    pause_start_time = time.time()
+    input()
+    pause_duration = time.time() - pause_start_time
+
+    return pause_duration</code></pre>
+</details>
+</dd>
+<dt id="slothplayer.app.play_silence"><code class="name flex">
+<span>def <span class="ident">play_silence</span></span>(<span>slothplayer, sleepInterval)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def play_silence(slothplayer, sleepInterval):
+
+    start_silence_time = time.time()
+
+    for i in range(math.floor(sleepInterval*60*slothplayer.refreshFrequency),0,-1):
+                        
+        if slothplayer.npressed == True:
+            slothplayer.npressed = False
+            horizonta_line()
+            print_color(&#34;Next song...&#34;)
+            slothplayer.stop()
+            break  # finishing the loop
+
+
+        if slothplayer.ppressed == True:
+            slothplayer.ppressed = False
+            print(&#34;&#34;)
+            horizonta_line()
+            print_color(&#34;Pause... Press Enter to continue&#34;)
+            horizonta_line()
+
+            pause_program()
+
+
+        if i%(60*slothplayer.refreshFrequency) == 0:
+            sys.stdout.write(&#39; &#39; + str(int(i/(60*slothplayer.refreshFrequency))))
+            sys.stdout.flush()
+
+        time.sleep(1.0/slothplayer.refreshFrequency)
+
+    return time.time()-start_silence_time</code></pre>
+</details>
+</dd>
+<dt id="slothplayer.app.play_song"><code class="name flex">
+<span>def <span class="ident">play_song</span></span>(<span>slothplayer, song)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def play_song(slothplayer, song):
+
+    #Plays a song and return to main thread when the song is over or upon user intervention
+
+    logging.debug(&#39;Fetching song title&#39;)
+    try:
+        song_title = slothplayer.play(song)
+    except:
+        return False
+
+    
+    logging.debug(&#39;Fetching song title... done&#39;)
+
+    playing = set([1,2,3,4])
+    
+    # Song loading management
+    i = 0
+    while i &lt; 10:
+        time.sleep(1) #Give time to get going
+        duration = slothplayer.player.get_length() / 1000
+        mm, ss = divmod(duration, 60)
+        if mm+ss == 0: # means song not loaded
+            i = i+1
+        else:
+            break
+
+    if i == 10:
+        print_color(&#34;Song couldn&#39;t be loaded, next...&#34;)
+        return False
+
+    # the song has loaded at this point
+    songStartTime = time.time()
+    
+    if song_title == &#34;&#34;:
+        print_color(f&#34;Playing: {song} Length: {mm:00.0f}:{ss:00.0f}&#34;, &#34;green&#34;)
+    else:
+        print_color(f&#34;Playing: {song_title} Length: {mm:00.0f}:{ss:00.0f}&#34;, &#34;green&#34;)
+        print_color(song, &#34;green&#34;)
+
+    print_color(&#34;Press (n) to skip, (p) to pause, (c) to open &#34; + slothplayer.configuration_file +  &#34;, (r) to reload configuration and (q) to quit&#34;, &#34;pink&#34;)
+
+    logging.debug(&#39;Playing, waiting for user input&#39;)
+
+    while True: # loop while playing, waiting for user input
+        # stop song if it is too long
+        logging.debug(&#39;stop song if it is too long&#39;)
+        if time.time() - songStartTime &gt; slothplayer.maxSongPlayTime * 60:
+            print_color(f&#34;Song exceeded max allowed duration ({slothplayer.maxSongPlayTime} minutes). Stoping...&#34;)
+            
+            #fade out
+            for i in range(100,0,-5):
+                slothplayer.player.audio_set_volume(i)
+                time.sleep(0.5)
+
+            slothplayer.stop()
+
+        logging.debug(&#39;if slothplayer.npressed == True:&#39;)
+        if slothplayer.npressed == True:
+            slothplayer.npressed = False
+            horizonta_line()
+            print_color(&#34;Next song...&#34;)
+            slothplayer.stop()
+            break  # finishing the loop
+        
+        logging.debug(&#39;if slothplayer.ppressed == True:&#39;)
+        if slothplayer.ppressed == True:
+            slothplayer.ppressed = False
+            horizonta_line()
+            print_color(&#34;Pause... Press Enter to continue&#34;)
+            horizonta_line()
+            slothplayer.pause()
+
+            pause_duration = pause_program()
+
+            songStartTime += pause_duration # offset music time by time spent in pause
+            slothplayer.resume()
+            
+        logging.debug(&#39;state = slothplayer.get_state()&#39;)
+        state = slothplayer.get_state()
+        # print(state)
+
+        if state not in playing: # if the song is finished
+            
+            logging.debug(&#39;State not in playing&#39;)
+            return time.time()-songStartTime
+
+        time.sleep(1.0/slothplayer.refreshFrequency)</code></pre>
+</details>
+</dd>
+<dt id="slothplayer.app.thread_keyboard"><code class="name flex">
+<span>def <span class="ident">thread_keyboard</span></span>(<span>slothplayer)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def thread_keyboard(slothplayer):
+
+    kb = KBHit()
+
+    while True:
+        if kb.kbhit():
+            key_pressed = kb.getch()
+
+            if key_pressed == &#39;n&#39;:
+                slothplayer.npressed  = True
+
+            elif key_pressed == &#39;c&#39;:
+                horizonta_line()
+                print_color(&#34;Opening configuration file&#34;)
+                horizonta_line()
+                os.startfile(slothplayer.configuration_file)
+            elif key_pressed == &#39;r&#39;:
+                horizonta_line()
+                print_color(&#34;Loading Config...&#34;)
+                horizonta_line()
+                slothplayer.loadconfig()
+                slothplayer.printconfig()
+            elif key_pressed == &#39;q&#39;:
+                horizonta_line()
+                print_color(f&#34;Run Time: {time.strftime(&#39;%H:%M:%S&#39;, time.gmtime(time.time()-slothplayer.init_time))}&#34;)
+                print(&#34; Goodbye&#34;, Fore.WHITE)
+                input()
+                os._exit(1)
+            elif key_pressed == &#39;p&#39;:
+                slothplayer.ppressed  = True
+            else:
+                pass
+
+
+        time.sleep(0.2)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="slothplayer" href="index.html">slothplayer</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="two-column">
+<li><code><a title="slothplayer.app.app" href="#slothplayer.app.app">app</a></code></li>
+<li><code><a title="slothplayer.app.horizonta_line" href="#slothplayer.app.horizonta_line">horizonta_line</a></code></li>
+<li><code><a title="slothplayer.app.initialize_player" href="#slothplayer.app.initialize_player">initialize_player</a></code></li>
+<li><code><a title="slothplayer.app.pause_program" href="#slothplayer.app.pause_program">pause_program</a></code></li>
+<li><code><a title="slothplayer.app.play_silence" href="#slothplayer.app.play_silence">play_silence</a></code></li>
+<li><code><a title="slothplayer.app.play_song" href="#slothplayer.app.play_song">play_song</a></code></li>
+<li><code><a title="slothplayer.app.thread_keyboard" href="#slothplayer.app.thread_keyboard">thread_keyboard</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
