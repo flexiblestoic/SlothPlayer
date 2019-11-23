@@ -37,8 +37,8 @@ def thread_keyboard(slothplayer):
                 slothplayer.printconfig()
             elif key_pressed == 'q':
                 horizonta_line()
-                print("Goodbye", Fore.WHITE)
                 print_color(f"Run Time: {time.strftime('%H:%M:%S', time.gmtime(time.time()-slothplayer.init_time))}")
+                print(" Goodbye", Fore.WHITE)
                 input()
                 os._exit(1)
             elif key_pressed == 'p':

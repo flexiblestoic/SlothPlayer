@@ -8,6 +8,9 @@ import html
 import hjson
 
 def print_color(text, argcolor = "white"):
+    '''
+    Prints using colorama
+    '''
 
     if argcolor == "white":
         color = Fore.WHITE
