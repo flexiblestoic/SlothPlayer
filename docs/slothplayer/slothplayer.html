@@ -54,7 +54,19 @@ def print_color(text, argcolor = &#34;white&#34;):
 
 class SlothPlayer():
 
+    &#34;&#34;&#34;
+    Model of the player. Fetch configuration and instantiate a vlc player through vlc-python binding.
+    
+    &#34;&#34;&#34;
+
     def __init__(self, config_file=&#34;config.txt&#34;):
+        &#34;&#34;&#34;
+        Initializer of the class.
+
+        Args:
+            config_file (str): configuration file, by default &#34;config.txt&#34;
+        
+        &#34;&#34;&#34;
         #self.instance = vlc.Instance(&#34;--novideo&#34;,  &#34;--quiet&#34;)
         self.configuration_file = config_file
         self.instance = vlc.Instance(&#34;--novideo&#34;,  &#34;--quiet&#34;)
@@ -68,15 +80,30 @@ class SlothPlayer():
 
     
     def getPlaylistLinks(self, url):
+        &#34;&#34;&#34;Gets youtube playlist from a url.
 
+        Args:
+            url (str): The youtube url.
+
+        Returns:
+            output (list[str]): a list of urls of individual videos from the playlist if success
+
+        Raises:
+            IOError: if unable to retrive the links from the playlist
+
+        &#34;&#34;&#34;
         playlist = Playlist(url)
-        playlist.populate_video_urls()
+        try:
+            playlist.populate_video_urls()
+        except:
+            raise IOError
 
         output = playlist.video_urls
 
         return output
 
     def printconfig(self):
+        &#34;&#34;&#34;Print the loaded config&#34;&#34;&#34;
 
         print_color(f&#34;Local Folders: {self.localMusicFolders}&#34;)
         print_color(f&#34;Active: {self.localMusicFoldersActive}&#34;)
@@ -88,6 +115,7 @@ class SlothPlayer():
 
 
     def loadconfig(self):
+        &#34;&#34;&#34;Loads the configuration file&#34;&#34;&#34;
 
         try:
             with open(self.configuration_file, encoding=&#39;utf-8&#39;) as config_file:
@@ -109,6 +137,11 @@ class SlothPlayer():
         return True
 
     def __fetchsongs(self):
+        &#34;&#34;&#34;Fetch songs from the local music folders and Youtube playlists
+        Returns: 
+            An array of local files and youtube videos links
+        
+        &#34;&#34;&#34;
         
         soundfiles = []
 
@@ -121,7 +154,12 @@ class SlothPlayer():
 
         if self.youtubePlaylistsActive:
             for youtubePlaylist in self.youtubePlaylists:
-                youtubePlaylistLinks = self.getPlaylistLinks(youtubePlaylist)
+                
+                try:
+                    youtubePlaylistLinks = self.getPlaylistLinks(youtubePlaylist)
+                except:
+                    print(&#34;Couldn&#39;t fetch &#34; + youtubePlaylistLinks)
+                    continue
 
                 soundfiles = soundfiles + youtubePlaylistLinks
 
@@ -129,6 +167,10 @@ class SlothPlayer():
         
 
     def play(self, song):
+        &#34;&#34;&#34;Instantiates a vlc player and plays a song from the list of playable songs. 
+        Non blocking. Fetch and returns the title of the song if it is a Youtube song.  
+        &#34;&#34;&#34;
+
         #movie is the YouTube or a local URL
 
         self.instance = vlc.Instance(&#34;--novideo&#34;,  &#34;--quiet&#34;)
@@ -158,19 +200,36 @@ class SlothPlayer():
         return song_title
 
     def pause(self):
+        &#34;&#34;&#34;Pauses the player&#34;&#34;&#34;
         self.player.pause()
 
     def stop(self):
+        &#34;&#34;&#34;Stops the player&#34;&#34;&#34;
         self.player.stop()
 
     def resume(self):
+        &#34;&#34;&#34;Resumes a previously paused player&#34;&#34;&#34;
         self.player.play()
 
     def get_state(self):
+        &#34;&#34;&#34;
+        Returns the state of the player:
+        {0: &#39;NothingSpecial&#39;,
+        1: &#39;Opening&#39;,
+        2: &#39;Buffering&#39;,
+        3: &#39;Playing&#39;,
+        4: &#39;Paused&#39;,
+        5: &#39;Stopped&#39;,
+        6: &#39;Ended&#39;,
+        7: &#39;Error&#39;}
+        &#34;&#34;&#34;
+        
+
         return self.player.get_state()
 
 
 if __name__ == &#34;__main__&#34;:
+    &#34;&#34;&#34;Tests the slothplayer module by playing and pausing a song.&#34;&#34;&#34;
 
     import time
     
@@ -240,14 +299,32 @@ if __name__ == &#34;__main__&#34;:
 <span>(</span><span>config_file='config.txt')</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Model of the player. Fetch configuration and instantiate a vlc player through vlc-python binding.</p>
+<p>Initializer of the class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>config_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>configuration file, by default "config.txt"</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SlothPlayer():
 
+    &#34;&#34;&#34;
+    Model of the player. Fetch configuration and instantiate a vlc player through vlc-python binding.
+    
+    &#34;&#34;&#34;
+
     def __init__(self, config_file=&#34;config.txt&#34;):
+        &#34;&#34;&#34;
+        Initializer of the class.
+
+        Args:
+            config_file (str): configuration file, by default &#34;config.txt&#34;
+        
+        &#34;&#34;&#34;
         #self.instance = vlc.Instance(&#34;--novideo&#34;,  &#34;--quiet&#34;)
         self.configuration_file = config_file
         self.instance = vlc.Instance(&#34;--novideo&#34;,  &#34;--quiet&#34;)
@@ -261,15 +338,30 @@ if __name__ == &#34;__main__&#34;:
 
     
     def getPlaylistLinks(self, url):
+        &#34;&#34;&#34;Gets youtube playlist from a url.
 
+        Args:
+            url (str): The youtube url.
+
+        Returns:
+            output (list[str]): a list of urls of individual videos from the playlist if success
+
+        Raises:
+            IOError: if unable to retrive the links from the playlist
+
+        &#34;&#34;&#34;
         playlist = Playlist(url)
-        playlist.populate_video_urls()
+        try:
+            playlist.populate_video_urls()
+        except:
+            raise IOError
 
         output = playlist.video_urls
 
         return output
 
     def printconfig(self):
+        &#34;&#34;&#34;Print the loaded config&#34;&#34;&#34;
 
         print_color(f&#34;Local Folders: {self.localMusicFolders}&#34;)
         print_color(f&#34;Active: {self.localMusicFoldersActive}&#34;)
@@ -281,6 +373,7 @@ if __name__ == &#34;__main__&#34;:
 
 
     def loadconfig(self):
+        &#34;&#34;&#34;Loads the configuration file&#34;&#34;&#34;
 
         try:
             with open(self.configuration_file, encoding=&#39;utf-8&#39;) as config_file:
@@ -302,6 +395,11 @@ if __name__ == &#34;__main__&#34;:
         return True
 
     def __fetchsongs(self):
+        &#34;&#34;&#34;Fetch songs from the local music folders and Youtube playlists
+        Returns: 
+            An array of local files and youtube videos links
+        
+        &#34;&#34;&#34;
         
         soundfiles = []
 
@@ -314,7 +412,12 @@ if __name__ == &#34;__main__&#34;:
 
         if self.youtubePlaylistsActive:
             for youtubePlaylist in self.youtubePlaylists:
-                youtubePlaylistLinks = self.getPlaylistLinks(youtubePlaylist)
+                
+                try:
+                    youtubePlaylistLinks = self.getPlaylistLinks(youtubePlaylist)
+                except:
+                    print(&#34;Couldn&#39;t fetch &#34; + youtubePlaylistLinks)
+                    continue
 
                 soundfiles = soundfiles + youtubePlaylistLinks
 
@@ -322,6 +425,10 @@ if __name__ == &#34;__main__&#34;:
         
 
     def play(self, song):
+        &#34;&#34;&#34;Instantiates a vlc player and plays a song from the list of playable songs. 
+        Non blocking. Fetch and returns the title of the song if it is a Youtube song.  
+        &#34;&#34;&#34;
+
         #movie is the YouTube or a local URL
 
         self.instance = vlc.Instance(&#34;--novideo&#34;,  &#34;--quiet&#34;)
@@ -351,15 +458,31 @@ if __name__ == &#34;__main__&#34;:
         return song_title
 
     def pause(self):
+        &#34;&#34;&#34;Pauses the player&#34;&#34;&#34;
         self.player.pause()
 
     def stop(self):
+        &#34;&#34;&#34;Stops the player&#34;&#34;&#34;
         self.player.stop()
 
     def resume(self):
+        &#34;&#34;&#34;Resumes a previously paused player&#34;&#34;&#34;
         self.player.play()
 
     def get_state(self):
+        &#34;&#34;&#34;
+        Returns the state of the player:
+        {0: &#39;NothingSpecial&#39;,
+        1: &#39;Opening&#39;,
+        2: &#39;Buffering&#39;,
+        3: &#39;Playing&#39;,
+        4: &#39;Paused&#39;,
+        5: &#39;Stopped&#39;,
+        6: &#39;Ended&#39;,
+        7: &#39;Error&#39;}
+        &#34;&#34;&#34;
+        
+
         return self.player.get_state()</code></pre>
 </details>
 <h3>Methods</h3>
@@ -368,15 +491,44 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">getPlaylistLinks</span></span>(<span>self, url)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Gets youtube playlist from a url.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>url</code></strong> :&ensp;<code>str</code></dt>
+<dd>The youtube url.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>output</code></strong> :&ensp;<code>list</code>[<code>str</code>]</dt>
+<dd>a list of urls of individual videos from the playlist if success</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><strong><code>IOError</code></strong></dt>
+<dd>if unable to retrive the links from the playlist</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def getPlaylistLinks(self, url):
+    &#34;&#34;&#34;Gets youtube playlist from a url.
 
+    Args:
+        url (str): The youtube url.
+
+    Returns:
+        output (list[str]): a list of urls of individual videos from the playlist if success
+
+    Raises:
+        IOError: if unable to retrive the links from the playlist
+
+    &#34;&#34;&#34;
     playlist = Playlist(url)
-    playlist.populate_video_urls()
+    try:
+        playlist.populate_video_urls()
+    except:
+        raise IOError
 
     output = playlist.video_urls
 
@@ -387,12 +539,33 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">get_state</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Returns the state of the player:
+{0: 'NothingSpecial',
+1: 'Opening',
+2: 'Buffering',
+3: 'Playing',
+4: 'Paused',
+5: 'Stopped',
+6: 'Ended',
+7: 'Error'}</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_state(self):
+    &#34;&#34;&#34;
+    Returns the state of the player:
+    {0: &#39;NothingSpecial&#39;,
+    1: &#39;Opening&#39;,
+    2: &#39;Buffering&#39;,
+    3: &#39;Playing&#39;,
+    4: &#39;Paused&#39;,
+    5: &#39;Stopped&#39;,
+    6: &#39;Ended&#39;,
+    7: &#39;Error&#39;}
+    &#34;&#34;&#34;
+    
+
     return self.player.get_state()</code></pre>
 </details>
 </dd>
@@ -400,12 +573,13 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">loadconfig</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Loads the configuration file</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def loadconfig(self):
+    &#34;&#34;&#34;Loads the configuration file&#34;&#34;&#34;
 
     try:
         with open(self.configuration_file, encoding=&#39;utf-8&#39;) as config_file:
@@ -431,12 +605,13 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">pause</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Pauses the player</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pause(self):
+    &#34;&#34;&#34;Pauses the player&#34;&#34;&#34;
     self.player.pause()</code></pre>
 </details>
 </dd>
@@ -444,12 +619,17 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">play</span></span>(<span>self, song)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Instantiates a vlc player and plays a song from the list of playable songs.
+Non blocking. Fetch and returns the title of the song if it is a Youtube song.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def play(self, song):
+    &#34;&#34;&#34;Instantiates a vlc player and plays a song from the list of playable songs. 
+    Non blocking. Fetch and returns the title of the song if it is a Youtube song.  
+    &#34;&#34;&#34;
+
     #movie is the YouTube or a local URL
 
     self.instance = vlc.Instance(&#34;--novideo&#34;,  &#34;--quiet&#34;)
@@ -483,12 +663,13 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">printconfig</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Print the loaded config</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def printconfig(self):
+    &#34;&#34;&#34;Print the loaded config&#34;&#34;&#34;
 
     print_color(f&#34;Local Folders: {self.localMusicFolders}&#34;)
     print_color(f&#34;Active: {self.localMusicFoldersActive}&#34;)
@@ -502,12 +683,13 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">resume</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Resumes a previously paused player</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def resume(self):
+    &#34;&#34;&#34;Resumes a previously paused player&#34;&#34;&#34;
     self.player.play()</code></pre>
 </details>
 </dd>
@@ -515,12 +697,13 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">stop</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Stops the player</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def stop(self):
+    &#34;&#34;&#34;Stops the player&#34;&#34;&#34;
     self.player.stop()</code></pre>
 </details>
 </dd>

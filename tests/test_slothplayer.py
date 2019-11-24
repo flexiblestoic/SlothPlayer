@@ -50,3 +50,15 @@ def test_play_song_bad(load_good_config):
     slothplayer.loadconfig()
     result = play_song(slothplayer, "https://www.youtube.com/watch?v=PCicKydXE")
     assert result == False 
+
+
+def test_getPlaylistLinks_good(load_good_config):
+    sloth = SlothPlayer(load_good_config)
+    result = sloth.getPlaylistLinks("https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbw0zENvao9bm8Awh")
+    assert len(result) > 200
+
+def test_getPlaylistLinks_bad(load_good_config):
+    sloth = SlothPlayer(load_good_config)
+    result = sloth.getPlaylistLinks("https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbwh")
+    assert result == []
+

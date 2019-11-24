@@ -28,7 +28,19 @@ def print_color(text, argcolor = "white"):
 
 class SlothPlayer():
 
+    """
+    Model of the player. Fetch configuration and instantiate a vlc player through vlc-python binding.
+    
+    """
+
     def __init__(self, config_file="config.txt"):
+        """
+        Initializer of the class.
+
+        Args:
+            config_file (str): configuration file, by default "config.txt"
+        
+        """
         #self.instance = vlc.Instance("--novideo",  "--quiet")
         self.configuration_file = config_file
         self.instance = vlc.Instance("--novideo",  "--quiet")
@@ -42,15 +54,30 @@ class SlothPlayer():
 
     
     def getPlaylistLinks(self, url):
+        """Gets youtube playlist from a url.
 
+        Args:
+            url (str): The youtube url.
+
+        Returns:
+            output (list[str]): a list of urls of individual videos from the playlist if success
+
+        Raises:
+            IOError: if unable to retrive the links from the playlist
+
+        """
         playlist = Playlist(url)
-        playlist.populate_video_urls()
+        try:
+            playlist.populate_video_urls()
+        except:
+            raise IOError
 
         output = playlist.video_urls
 
         return output
 
     def printconfig(self):
+        """Print the loaded config"""
 
         print_color(f"Local Folders: {self.localMusicFolders}")
         print_color(f"Active: {self.localMusicFoldersActive}")
@@ -62,6 +89,7 @@ class SlothPlayer():
 
 
     def loadconfig(self):
+        """Loads the configuration file"""
 
         try:
             with open(self.configuration_file, encoding='utf-8') as config_file:
@@ -83,6 +111,11 @@ class SlothPlayer():
         return True
 
     def __fetchsongs(self):
+        """Fetch songs from the local music folders and Youtube playlists
+        Returns: 
+            An array of local files and youtube videos links
+        
+        """
         
         soundfiles = []
 
@@ -95,7 +128,12 @@ class SlothPlayer():
 
         if self.youtubePlaylistsActive:
             for youtubePlaylist in self.youtubePlaylists:
-                youtubePlaylistLinks = self.getPlaylistLinks(youtubePlaylist)
+                
+                try:
+                    youtubePlaylistLinks = self.getPlaylistLinks(youtubePlaylist)
+                except:
+                    print("Couldn't fetch " + youtubePlaylistLinks)
+                    continue
 
                 soundfiles = soundfiles + youtubePlaylistLinks
 
@@ -103,6 +141,10 @@ class SlothPlayer():
         
 
     def play(self, song):
+        """Instantiates a vlc player and plays a song from the list of playable songs. 
+        Non blocking. Fetch and returns the title of the song if it is a Youtube song.  
+        """
+
         #movie is the YouTube or a local URL
 
         self.instance = vlc.Instance("--novideo",  "--quiet")
@@ -132,19 +174,36 @@ class SlothPlayer():
         return song_title
 
     def pause(self):
+        """Pauses the player"""
         self.player.pause()
 
     def stop(self):
+        """Stops the player"""
         self.player.stop()
 
     def resume(self):
+        """Resumes a previously paused player"""
         self.player.play()
 
     def get_state(self):
+        """
+        Returns the state of the player:
+        {0: 'NothingSpecial',
+        1: 'Opening',
+        2: 'Buffering',
+        3: 'Playing',
+        4: 'Paused',
+        5: 'Stopped',
+        6: 'Ended',
+        7: 'Error'}
+        """
+        
+
         return self.player.get_state()
 
 
 if __name__ == "__main__":
+    """Tests the slothplayer module by playing and pausing a song."""
 
     import time
     

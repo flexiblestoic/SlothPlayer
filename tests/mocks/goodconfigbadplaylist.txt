@@ -1,0 +1,26 @@
+{
+  "localMusicFolders": [
+    #"C:\\music"
+    #"D:\\mymusic"
+  ]
+
+  "localMusicFoldersActive": true
+
+  "youtubePlaylists": [
+    #"https://www.youtube.com/playlist?list=PLo3pNg0eiPc-9livXsto4X1ROzJ3kGI-3"  # Quiet Songs Playlist 2020
+    #"https://www.youtube.com/playlist?list=PLd6-Jg5IeeosymMDHA5QhzA2CbelAGN6e" # Accoustic
+    #"https://www.youtube.com/playlist?list=PLw9zKTSWmoixGTX-e8y0R6xkF6Eq1RhEZ" # Chillhop
+    "https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbw0zENvao9bm8Awh" # Post Modern Jukebox
+    #"https://www.youtube.com/playlist?list=PLyvDPG7a_zWCf7tiyWqNBKynAi0_7I-Nr"# Adagios Classical Music
+  ]
+
+  "youtubePlaylistsActive": true
+
+  "consecutiveReadings": 2
+
+  "maxSongPlayTime": 10
+
+  "interval": [4, 7]
+
+  "fileTypes": ["*.mp3", "*.wma", "*.flac", "*.aac", "*.ogg"]
+}

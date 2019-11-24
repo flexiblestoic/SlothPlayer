@@ -17,7 +17,7 @@ def env(c, docs=False):
 
 @task
 def doc(c, docs=False):
-    c.run(r"rmdir /q /s docs")
+    #c.run(r"rmdir /q /s docs")
     c.run(r"pdoc --html -o docs --force slothplayer")
     c.run(r"pdoc --html -o docs --force tests")
 

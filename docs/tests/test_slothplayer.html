@@ -75,7 +75,18 @@ def test_play_song_bad(load_good_config):
     slothplayer = SlothPlayer(load_good_config)
     slothplayer.loadconfig()
     result = play_song(slothplayer, &#34;https://www.youtube.com/watch?v=PCicKydXE&#34;)
-    assert result == False </code></pre>
+    assert result == False 
+
+
+def test_getPlaylistLinks_good(load_good_config):
+    sloth = SlothPlayer(load_good_config)
+    result = sloth.getPlaylistLinks(&#34;https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbw0zENvao9bm8Awh&#34;)
+    assert len(result) &gt; 200
+
+def test_getPlaylistLinks_bad(load_good_config):
+    sloth = SlothPlayer(load_good_config)
+    result = sloth.getPlaylistLinks(&#34;https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbwh&#34;)
+    assert result == []</code></pre>
 </details>
 </section>
 <section>
@@ -126,6 +137,36 @@ def load_good_config():
     sloth = SlothPlayer(load_bad_config)
     with pytest.raises(IOError):
         sloth.loadconfig()</code></pre>
+</details>
+</dd>
+<dt id="tests.test_slothplayer.test_getPlaylistLinks_bad"><code class="name flex">
+<span>def <span class="ident">test_getPlaylistLinks_bad</span></span>(<span>load_good_config)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_getPlaylistLinks_bad(load_good_config):
+    sloth = SlothPlayer(load_good_config)
+    result = sloth.getPlaylistLinks(&#34;https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbwh&#34;)
+    assert result == []</code></pre>
+</details>
+</dd>
+<dt id="tests.test_slothplayer.test_getPlaylistLinks_good"><code class="name flex">
+<span>def <span class="ident">test_getPlaylistLinks_good</span></span>(<span>load_good_config)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_getPlaylistLinks_good(load_good_config):
+    sloth = SlothPlayer(load_good_config)
+    result = sloth.getPlaylistLinks(&#34;https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbw0zENvao9bm8Awh&#34;)
+    assert len(result) &gt; 200</code></pre>
 </details>
 </dd>
 <dt id="tests.test_slothplayer.test_good_config"><code class="name flex">
@@ -240,6 +281,8 @@ def load_good_config():
 <li><code><a title="tests.test_slothplayer.load_bad_config" href="#tests.test_slothplayer.load_bad_config">load_bad_config</a></code></li>
 <li><code><a title="tests.test_slothplayer.load_good_config" href="#tests.test_slothplayer.load_good_config">load_good_config</a></code></li>
 <li><code><a title="tests.test_slothplayer.test_bad_config" href="#tests.test_slothplayer.test_bad_config">test_bad_config</a></code></li>
+<li><code><a title="tests.test_slothplayer.test_getPlaylistLinks_bad" href="#tests.test_slothplayer.test_getPlaylistLinks_bad">test_getPlaylistLinks_bad</a></code></li>
+<li><code><a title="tests.test_slothplayer.test_getPlaylistLinks_good" href="#tests.test_slothplayer.test_getPlaylistLinks_good">test_getPlaylistLinks_good</a></code></li>
 <li><code><a title="tests.test_slothplayer.test_good_config" href="#tests.test_slothplayer.test_good_config">test_good_config</a></code></li>
 <li><code><a title="tests.test_slothplayer.test_initialize_player_bad" href="#tests.test_slothplayer.test_initialize_player_bad">test_initialize_player_bad</a></code></li>
 <li><code><a title="tests.test_slothplayer.test_initialize_player_good" href="#tests.test_slothplayer.test_initialize_player_good">test_initialize_player_good</a></code></li>
