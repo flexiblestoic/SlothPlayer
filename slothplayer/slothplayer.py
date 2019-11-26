@@ -1,4 +1,3 @@
-from colorama import Fore, Back, Style, init
 import vlc
 import time
 from pytube import YouTube, Playlist
@@ -6,24 +5,8 @@ from pathlib import Path
 import os
 import html
 import hjson
+from slothplayer.tools import print_color
 
-def print_color(text, argcolor = "white"):
-    '''
-    Prints using colorama
-    '''
-
-    if argcolor == "white":
-        color = Fore.WHITE
-    elif argcolor == "green":
-        color = Fore.GREEN
-    elif argcolor == "magenta":
-        color = Fore.MAGENTA
-    elif argcolor == "grey":
-        color = Fore.LIGHTBLACK_EX
-    elif argcolor == "pink":
-        color = Fore.LIGHTRED_EX        
-    guardColor = Fore.LIGHTBLACK_EX
-    print(color, text, guardColor)
 
 
 class SlothPlayer():

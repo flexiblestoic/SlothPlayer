@@ -24,32 +24,15 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from colorama import Fore, Back, Style, init
-import vlc
+<pre><code class="python">import vlc
 import time
 from pytube import YouTube, Playlist
 from pathlib import Path
 import os
 import html
 import hjson
+from slothplayer.tools import print_color
 
-def print_color(text, argcolor = &#34;white&#34;):
-    &#39;&#39;&#39;
-    Prints using colorama
-    &#39;&#39;&#39;
-
-    if argcolor == &#34;white&#34;:
-        color = Fore.WHITE
-    elif argcolor == &#34;green&#34;:
-        color = Fore.GREEN
-    elif argcolor == &#34;magenta&#34;:
-        color = Fore.MAGENTA
-    elif argcolor == &#34;grey&#34;:
-        color = Fore.LIGHTBLACK_EX
-    elif argcolor == &#34;pink&#34;:
-        color = Fore.LIGHTRED_EX        
-    guardColor = Fore.LIGHTBLACK_EX
-    print(color, text, guardColor)
 
 
 class SlothPlayer():
@@ -259,37 +242,6 @@ if __name__ == &#34;__main__&#34;:
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
-<dl>
-<dt id="slothplayer.slothplayer.print_color"><code class="name flex">
-<span>def <span class="ident">print_color</span></span>(<span>text, argcolor='white')</span>
-</code></dt>
-<dd>
-<section class="desc"><p>Prints using colorama</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def print_color(text, argcolor = &#34;white&#34;):
-    &#39;&#39;&#39;
-    Prints using colorama
-    &#39;&#39;&#39;
-
-    if argcolor == &#34;white&#34;:
-        color = Fore.WHITE
-    elif argcolor == &#34;green&#34;:
-        color = Fore.GREEN
-    elif argcolor == &#34;magenta&#34;:
-        color = Fore.MAGENTA
-    elif argcolor == &#34;grey&#34;:
-        color = Fore.LIGHTBLACK_EX
-    elif argcolor == &#34;pink&#34;:
-        color = Fore.LIGHTRED_EX        
-    guardColor = Fore.LIGHTBLACK_EX
-    print(color, text, guardColor)</code></pre>
-</details>
-</dd>
-</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -721,11 +673,6 @@ Non blocking. Fetch and returns the title of the song if it is a Youtube song.</
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="slothplayer" href="index.html">slothplayer</a></code></li>
-</ul>
-</li>
-<li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
-<li><code><a title="slothplayer.slothplayer.print_color" href="#slothplayer.slothplayer.print_color">print_color</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

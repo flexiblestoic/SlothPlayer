@@ -1,8 +1,7 @@
 import random, os, time, sys, math
 import threading
-from slothplayer.kbhit import KBHit
-from colorama import Fore, Back, Style, init
-from slothplayer.slothplayer import print_color, SlothPlayer
+from slothplayer.tools import KBHit, print_color, init, Fore
+from slothplayer.slothplayer import SlothPlayer
 import logging
 
 #logging.basicConfig(level=logging.DEBUG)
@@ -14,7 +13,10 @@ def horizonta_line():
 
 
 def thread_keyboard(slothplayer):
+    """
+    Non blocking thread for the keyboard inputs which either acts or writes flags for the main thread
 
+    """
     kb = KBHit()
 
     while True:
@@ -51,7 +53,9 @@ def thread_keyboard(slothplayer):
 
 
 def initialize_player(config_file, auto_open=True):
-    
+    """
+    Initializes the vlc player, loads config and the playlists.
+    """
     init()
     print_color(r'''                                                                                                                                                                                                                                                             
    _____ _       _   _       _____  _                       
@@ -101,7 +105,12 @@ def initialize_player(config_file, auto_open=True):
     
 
 def play_song(slothplayer, song):
-
+    """
+    Plays a song and stops when the song finished playing or if the player failed. The user can interrupt with a (n) press or pause with a (p) press.
+    Returns:
+        False if no song could be played.
+        Duration of the song if it was played.
+    """
     #Plays a song and return to main thread when the song is over or upon user intervention
 
     logging.debug('Fetching song title')
@@ -191,7 +200,12 @@ def play_song(slothplayer, song):
 
 
 def play_silence(slothplayer, sleepInterval):
+    """
+    Plays silence. The user can interrupt with a (n) press or pause with a (p) press.
 
+    Returns:
+        Duration of silence
+    """
     start_silence_time = time.time()
 
     for i in range(math.floor(sleepInterval*60*slothplayer.refreshFrequency),0,-1):
@@ -224,7 +238,12 @@ def play_silence(slothplayer, sleepInterval):
 
 
 def pause_program():
-    
+    """
+    Pauses the execution. Resumes when user presses enter.
+
+    Returns:
+        Pause duration
+    """
     pause_start_time = time.time()
     input()
     pause_duration = time.time() - pause_start_time
@@ -232,6 +251,10 @@ def pause_program():
     return pause_duration
 
 def app():
+
+    """
+    Main loop. Plays a number of songs per the config. Waits for a duration of silence per the config. 
+    """
 
 
     try:

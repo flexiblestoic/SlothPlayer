@@ -26,9 +26,8 @@
 </summary>
 <pre><code class="python">import random, os, time, sys, math
 import threading
-from slothplayer.kbhit import KBHit
-from colorama import Fore, Back, Style, init
-from slothplayer.slothplayer import print_color, SlothPlayer
+from slothplayer.tools import KBHit, print_color, init, Fore
+from slothplayer.slothplayer import SlothPlayer
 import logging
 
 #logging.basicConfig(level=logging.DEBUG)
@@ -40,7 +39,10 @@ def horizonta_line():
 
 
 def thread_keyboard(slothplayer):
+    &#34;&#34;&#34;
+    Non blocking thread for the keyboard inputs which either acts or writes flags for the main thread
 
+    &#34;&#34;&#34;
     kb = KBHit()
 
     while True:
@@ -77,7 +79,9 @@ def thread_keyboard(slothplayer):
 
 
 def initialize_player(config_file, auto_open=True):
-    
+    &#34;&#34;&#34;
+    Initializes the vlc player, loads config and the playlists.
+    &#34;&#34;&#34;
     init()
     print_color(r&#39;&#39;&#39;                                                                                                                                                                                                                                                             
    _____ _       _   _       _____  _                       
@@ -127,7 +131,12 @@ def initialize_player(config_file, auto_open=True):
     
 
 def play_song(slothplayer, song):
-
+    &#34;&#34;&#34;
+    Plays a song and stops when the song finished playing or if the player failed. The user can interrupt with a (n) press or pause with a (p) press.
+    Returns:
+        False if no song could be played.
+        Duration of the song if it was played.
+    &#34;&#34;&#34;
     #Plays a song and return to main thread when the song is over or upon user intervention
 
     logging.debug(&#39;Fetching song title&#39;)
@@ -217,7 +226,12 @@ def play_song(slothplayer, song):
 
 
 def play_silence(slothplayer, sleepInterval):
+    &#34;&#34;&#34;
+    Plays silence. The user can interrupt with a (n) press or pause with a (p) press.
 
+    Returns:
+        Duration of silence
+    &#34;&#34;&#34;
     start_silence_time = time.time()
 
     for i in range(math.floor(sleepInterval*60*slothplayer.refreshFrequency),0,-1):
@@ -250,7 +264,12 @@ def play_silence(slothplayer, sleepInterval):
 
 
 def pause_program():
-    
+    &#34;&#34;&#34;
+    Pauses the execution. Resumes when user presses enter.
+
+    Returns:
+        Pause duration
+    &#34;&#34;&#34;
     pause_start_time = time.time()
     input()
     pause_duration = time.time() - pause_start_time
@@ -258,6 +277,10 @@ def pause_program():
     return pause_duration
 
 def app():
+
+    &#34;&#34;&#34;
+    Main loop. Plays a number of songs per the config. Waits for a duration of silence per the config. 
+    &#34;&#34;&#34;
 
 
     try:
@@ -320,12 +343,16 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">app</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Main loop. Plays a number of songs per the config. Waits for a duration of silence per the config.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def app():
+
+    &#34;&#34;&#34;
+    Main loop. Plays a number of songs per the config. Waits for a duration of silence per the config. 
+    &#34;&#34;&#34;
 
 
     try:
@@ -390,13 +417,15 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">initialize_player</span></span>(<span>config_file, auto_open=True)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Initializes the vlc player, loads config and the playlists.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def initialize_player(config_file, auto_open=True):
-    
+    &#34;&#34;&#34;
+    Initializes the vlc player, loads config and the playlists.
+    &#34;&#34;&#34;
     init()
     print_color(r&#39;&#39;&#39;                                                                                                                                                                                                                                                             
    _____ _       _   _       _____  _                       
@@ -448,13 +477,23 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">pause_program</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Pauses the execution. Resumes when user presses enter.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Pause</code> <code>duration</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pause_program():
-    
+    &#34;&#34;&#34;
+    Pauses the execution. Resumes when user presses enter.
+
+    Returns:
+        Pause duration
+    &#34;&#34;&#34;
     pause_start_time = time.time()
     input()
     pause_duration = time.time() - pause_start_time
@@ -466,13 +505,23 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">play_silence</span></span>(<span>slothplayer, sleepInterval)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Plays silence. The user can interrupt with a (n) press or pause with a (p) press.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Duration</code> of <code>silence</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def play_silence(slothplayer, sleepInterval):
+    &#34;&#34;&#34;
+    Plays silence. The user can interrupt with a (n) press or pause with a (p) press.
 
+    Returns:
+        Duration of silence
+    &#34;&#34;&#34;
     start_silence_time = time.time()
 
     for i in range(math.floor(sleepInterval*60*slothplayer.refreshFrequency),0,-1):
@@ -508,13 +557,21 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">play_song</span></span>(<span>slothplayer, song)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Plays a song and stops when the song finished playing or if the player failed. The user can interrupt with a (n) press or pause with a (p) press.</p>
+<h2 id="returns">Returns</h2>
+<p>False if no song could be played.
+Duration of the song if it was played.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def play_song(slothplayer, song):
-
+    &#34;&#34;&#34;
+    Plays a song and stops when the song finished playing or if the player failed. The user can interrupt with a (n) press or pause with a (p) press.
+    Returns:
+        False if no song could be played.
+        Duration of the song if it was played.
+    &#34;&#34;&#34;
     #Plays a song and return to main thread when the song is over or upon user intervention
 
     logging.debug(&#39;Fetching song title&#39;)
@@ -606,13 +663,16 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">thread_keyboard</span></span>(<span>slothplayer)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Non blocking thread for the keyboard inputs which either acts or writes flags for the main thread</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def thread_keyboard(slothplayer):
+    &#34;&#34;&#34;
+    Non blocking thread for the keyboard inputs which either acts or writes flags for the main thread
 
+    &#34;&#34;&#34;
     kb = KBHit()
 
     while True:

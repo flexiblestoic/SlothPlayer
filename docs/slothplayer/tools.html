@@ -4,11 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.7.2" />
-<title>slothplayer.kbhit API documentation</title>
-<meta name="description" content="A Python class implementing KBHIT, the standard keyboard-interrupt poller.
-Works transparently on Windows and Posix (Linux, Mac OS X).
-Doesn&#39;t work
-…" />
+<title>slothplayer.tools API documentation</title>
+<meta name="description" content="" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -20,45 +17,15 @@ Doesn&#39;t work
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>slothplayer.kbhit</code></h1>
+<h1 class="title">Module <code>slothplayer.tools</code></h1>
 </header>
 <section id="section-intro">
-<p>A Python class implementing KBHIT, the standard keyboard-interrupt poller.
-Works transparently on Windows and Posix (Linux, Mac OS X).
-Doesn't work
-with IDLE.</p>
-<p>This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the
-GNU General Public License for more details.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">#!/usr/bin/env python
-&#39;&#39;&#39;
-A Python class implementing KBHIT, the standard keyboard-interrupt poller.
-Works transparently on Windows and Posix (Linux, Mac OS X).  Doesn&#39;t work
-with IDLE.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as 
-published by the Free Software Foundation, either version 3 of the 
-License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-&#39;&#39;&#39;
-
-import os
+<pre><code class="python">import os
+from colorama import Fore, Back, Style, init
 
 # Windows
 if os.name == &#39;nt&#39;:
@@ -73,7 +40,11 @@ else:
 
 
 class KBHit:
-
+    &#34;&#34;&#34;
+    A Python class implementing KBHIT, the standard keyboard-interrupt poller.
+    Works transparently on Windows and Posix (Linux, Mac OS X).  Doesn&#39;t work
+    with IDLE.
+    &#34;&#34;&#34;
     def __init__(self):
         &#39;&#39;&#39;Creates a KBHit object that you can call to do various keyboard things.
         &#39;&#39;&#39;
@@ -168,7 +139,26 @@ if __name__ == &#34;__main__&#34;:
                 break
             print(c)
 
-    kb.set_normal_term()</code></pre>
+    kb.set_normal_term()
+
+
+def print_color(text, argcolor = &#34;white&#34;):
+    &#39;&#39;&#39;
+    Prints using colorama. Release the terminal with a guard color set to grey by default.
+    &#39;&#39;&#39;
+
+    if argcolor == &#34;white&#34;:
+        color = Fore.WHITE
+    elif argcolor == &#34;green&#34;:
+        color = Fore.GREEN
+    elif argcolor == &#34;magenta&#34;:
+        color = Fore.MAGENTA
+    elif argcolor == &#34;grey&#34;:
+        color = Fore.LIGHTBLACK_EX
+    elif argcolor == &#34;pink&#34;:
+        color = Fore.LIGHTRED_EX        
+    guardColor = Fore.LIGHTBLACK_EX
+    print(color, text, guardColor)</code></pre>
 </details>
 </section>
 <section>
@@ -176,21 +166,60 @@ if __name__ == &#34;__main__&#34;:
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="slothplayer.tools.print_color"><code class="name flex">
+<span>def <span class="ident">print_color</span></span>(<span>text, argcolor='white')</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Prints using colorama. Release the terminal with a guard color set to grey by default.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def print_color(text, argcolor = &#34;white&#34;):
+    &#39;&#39;&#39;
+    Prints using colorama. Release the terminal with a guard color set to grey by default.
+    &#39;&#39;&#39;
+
+    if argcolor == &#34;white&#34;:
+        color = Fore.WHITE
+    elif argcolor == &#34;green&#34;:
+        color = Fore.GREEN
+    elif argcolor == &#34;magenta&#34;:
+        color = Fore.MAGENTA
+    elif argcolor == &#34;grey&#34;:
+        color = Fore.LIGHTBLACK_EX
+    elif argcolor == &#34;pink&#34;:
+        color = Fore.LIGHTRED_EX        
+    guardColor = Fore.LIGHTBLACK_EX
+    print(color, text, guardColor)</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="slothplayer.kbhit.KBHit"><code class="flex name class">
+<dt id="slothplayer.tools.KBHit"><code class="flex name class">
 <span>class <span class="ident">KBHit</span></span>
 </code></dt>
 <dd>
-<section class="desc"><p>Creates a KBHit object that you can call to do various keyboard things.</p></section>
+<section class="desc"><p>A Python class implementing KBHIT, the standard keyboard-interrupt poller.
+Works transparently on Windows and Posix (Linux, Mac OS X).
+Doesn't work
+with IDLE.</p>
+<p>Creates a KBHit object that you can call to do various keyboard things.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class KBHit:
-
+    &#34;&#34;&#34;
+    A Python class implementing KBHIT, the standard keyboard-interrupt poller.
+    Works transparently on Windows and Posix (Linux, Mac OS X).  Doesn&#39;t work
+    with IDLE.
+    &#34;&#34;&#34;
     def __init__(self):
         &#39;&#39;&#39;Creates a KBHit object that you can call to do various keyboard things.
         &#39;&#39;&#39;
@@ -271,7 +300,7 @@ if __name__ == &#34;__main__&#34;:
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="slothplayer.kbhit.KBHit.getarrow"><code class="name flex">
+<dt id="slothplayer.tools.KBHit.getarrow"><code class="name flex">
 <span>def <span class="ident">getarrow</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -306,7 +335,7 @@ Should not be called in the same program as getch().</p></section>
     return vals.index(ord(c.decode(&#39;utf-8&#39;)))</code></pre>
 </details>
 </dd>
-<dt id="slothplayer.kbhit.KBHit.getch"><code class="name flex">
+<dt id="slothplayer.tools.KBHit.getch"><code class="name flex">
 <span>def <span class="ident">getch</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -330,7 +359,7 @@ Should not be called in the same program as getarrow().</p></section>
         return sys.stdin.read(1)</code></pre>
 </details>
 </dd>
-<dt id="slothplayer.kbhit.KBHit.kbhit"><code class="name flex">
+<dt id="slothplayer.tools.KBHit.kbhit"><code class="name flex">
 <span>def <span class="ident">kbhit</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -350,7 +379,7 @@ Should not be called in the same program as getarrow().</p></section>
         return dr != []</code></pre>
 </details>
 </dd>
-<dt id="slothplayer.kbhit.KBHit.set_normal_term"><code class="name flex">
+<dt id="slothplayer.tools.KBHit.set_normal_term"><code class="name flex">
 <span>def <span class="ident">set_normal_term</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -387,15 +416,20 @@ On Windows this is a no-op.</p></section>
 <li><code><a title="slothplayer" href="index.html">slothplayer</a></code></li>
 </ul>
 </li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="slothplayer.tools.print_color" href="#slothplayer.tools.print_color">print_color</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="slothplayer.kbhit.KBHit" href="#slothplayer.kbhit.KBHit">KBHit</a></code></h4>
+<h4><code><a title="slothplayer.tools.KBHit" href="#slothplayer.tools.KBHit">KBHit</a></code></h4>
 <ul class="">
-<li><code><a title="slothplayer.kbhit.KBHit.getarrow" href="#slothplayer.kbhit.KBHit.getarrow">getarrow</a></code></li>
-<li><code><a title="slothplayer.kbhit.KBHit.getch" href="#slothplayer.kbhit.KBHit.getch">getch</a></code></li>
-<li><code><a title="slothplayer.kbhit.KBHit.kbhit" href="#slothplayer.kbhit.KBHit.kbhit">kbhit</a></code></li>
-<li><code><a title="slothplayer.kbhit.KBHit.set_normal_term" href="#slothplayer.kbhit.KBHit.set_normal_term">set_normal_term</a></code></li>
+<li><code><a title="slothplayer.tools.KBHit.getarrow" href="#slothplayer.tools.KBHit.getarrow">getarrow</a></code></li>
+<li><code><a title="slothplayer.tools.KBHit.getch" href="#slothplayer.tools.KBHit.getch">getch</a></code></li>
+<li><code><a title="slothplayer.tools.KBHit.kbhit" href="#slothplayer.tools.KBHit.kbhit">kbhit</a></code></li>
+<li><code><a title="slothplayer.tools.KBHit.set_normal_term" href="#slothplayer.tools.KBHit.set_normal_term">set_normal_term</a></code></li>
 </ul>
 </li>
 </ul>

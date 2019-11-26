@@ -34,30 +34,38 @@ def load_good_config():
 
 @pytest.fixture
 def load_bad_config():
+    &#34;&#34;&#34;
+    Bad config has a hjson error unclosed &#39;[&#39;
+    &#34;&#34;&#34;
     return &#34;.\\tests\\mocks\\badonfig.txt&#34;
 
 
 def test_good_config(load_good_config):
+    &#34;&#34;&#34;Checks that Class SlothPlayer can load a good config&#34;&#34;&#34;
     sloth = SlothPlayer(load_good_config)
     sloth.loadconfig()
     assert sloth.interval == [4,7]
 
 def test_bad_config(load_bad_config):
+    &#34;&#34;&#34;Checks that Class SlothPlayer raises IOError if bad config&#34;&#34;&#34;
     sloth = SlothPlayer(load_bad_config)
     with pytest.raises(IOError):
         sloth.loadconfig()
 
 from slothplayer.app import initialize_player
 def test_initialize_player_good(load_good_config):
+    &#34;&#34;&#34;Checks that initialize_player works on a good config&#34;&#34;&#34;
     sloth = initialize_player(load_good_config, False)
     assert sloth.interval == [4,7]
 
 def test_initialize_player_bad(load_bad_config):
-        with pytest.raises(IOError):
-            sloth = initialize_player(load_bad_config, False)
+    &#34;&#34;&#34;Checks that initialize_player raises IOError on a bad config&#34;&#34;&#34;
+    with pytest.raises(IOError):
+        sloth = initialize_player(load_bad_config, False)
 
 from slothplayer.app import play_silence
 def test_play_silence(load_good_config):
+    &#34;&#34;&#34;Checks that play_silence() is playing the correct duration of silence&#34;&#34;&#34;
     slothplayer = SlothPlayer(load_good_config)
     slothplayer.loadconfig()
     actual_silence = play_silence(slothplayer, 0.03333) # 2 seconds
@@ -65,6 +73,7 @@ def test_play_silence(load_good_config):
 
 from slothplayer.app import play_song
 def test_play_song_good(load_good_config):
+    &#34;&#34;&#34;Plays a real youtube song and checks the duration played&#34;&#34;&#34;
     slothplayer = SlothPlayer(load_good_config)
     slothplayer.loadconfig()
     result = play_song(slothplayer, &#34;https://www.youtube.com/watch?v=PCicKydX5GE&#34;)
@@ -72,6 +81,7 @@ def test_play_song_good(load_good_config):
 
 
 def test_play_song_bad(load_good_config):
+    &#34;&#34;&#34;Checks that initialize_player returns false on a bad song&#34;&#34;&#34;
     slothplayer = SlothPlayer(load_good_config)
     slothplayer.loadconfig()
     result = play_song(slothplayer, &#34;https://www.youtube.com/watch?v=PCicKydXE&#34;)
@@ -79,11 +89,13 @@ def test_play_song_bad(load_good_config):
 
 
 def test_getPlaylistLinks_good(load_good_config):
+    &#34;&#34;&#34;Checks that SlothPlayer.getPlaylistLinks works on a youtube playlist example&#34;&#34;&#34;
     sloth = SlothPlayer(load_good_config)
     result = sloth.getPlaylistLinks(&#34;https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbw0zENvao9bm8Awh&#34;)
     assert len(result) &gt; 200
 
 def test_getPlaylistLinks_bad(load_good_config):
+    &#34;&#34;&#34;Checks that SlothPlayer.getPlaylistLinks return empty array on a bad list&#34;&#34;&#34;
     sloth = SlothPlayer(load_good_config)
     result = sloth.getPlaylistLinks(&#34;https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbwh&#34;)
     assert result == []</code></pre>
@@ -100,13 +112,16 @@ def test_getPlaylistLinks_bad(load_good_config):
 <span>def <span class="ident">load_bad_config</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Bad config has a hjson error unclosed '['</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.fixture
 def load_bad_config():
+    &#34;&#34;&#34;
+    Bad config has a hjson error unclosed &#39;[&#39;
+    &#34;&#34;&#34;
     return &#34;.\\tests\\mocks\\badonfig.txt&#34;</code></pre>
 </details>
 </dd>
@@ -128,12 +143,13 @@ def load_good_config():
 <span>def <span class="ident">test_bad_config</span></span>(<span>load_bad_config)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Checks that Class SlothPlayer raises IOError if bad config</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_bad_config(load_bad_config):
+    &#34;&#34;&#34;Checks that Class SlothPlayer raises IOError if bad config&#34;&#34;&#34;
     sloth = SlothPlayer(load_bad_config)
     with pytest.raises(IOError):
         sloth.loadconfig()</code></pre>
@@ -143,12 +159,13 @@ def load_good_config():
 <span>def <span class="ident">test_getPlaylistLinks_bad</span></span>(<span>load_good_config)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Checks that SlothPlayer.getPlaylistLinks return empty array on a bad list</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_getPlaylistLinks_bad(load_good_config):
+    &#34;&#34;&#34;Checks that SlothPlayer.getPlaylistLinks return empty array on a bad list&#34;&#34;&#34;
     sloth = SlothPlayer(load_good_config)
     result = sloth.getPlaylistLinks(&#34;https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbwh&#34;)
     assert result == []</code></pre>
@@ -158,12 +175,13 @@ def load_good_config():
 <span>def <span class="ident">test_getPlaylistLinks_good</span></span>(<span>load_good_config)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Checks that SlothPlayer.getPlaylistLinks works on a youtube playlist example</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_getPlaylistLinks_good(load_good_config):
+    &#34;&#34;&#34;Checks that SlothPlayer.getPlaylistLinks works on a youtube playlist example&#34;&#34;&#34;
     sloth = SlothPlayer(load_good_config)
     result = sloth.getPlaylistLinks(&#34;https://www.youtube.com/playlist?list=PLd3udltX2Fih-fkvfbw0zENvao9bm8Awh&#34;)
     assert len(result) &gt; 200</code></pre>
@@ -173,12 +191,13 @@ def load_good_config():
 <span>def <span class="ident">test_good_config</span></span>(<span>load_good_config)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Checks that Class SlothPlayer can load a good config</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_good_config(load_good_config):
+    &#34;&#34;&#34;Checks that Class SlothPlayer can load a good config&#34;&#34;&#34;
     sloth = SlothPlayer(load_good_config)
     sloth.loadconfig()
     assert sloth.interval == [4,7]</code></pre>
@@ -188,26 +207,28 @@ def load_good_config():
 <span>def <span class="ident">test_initialize_player_bad</span></span>(<span>load_bad_config)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Checks that initialize_player raises IOError on a bad config</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_initialize_player_bad(load_bad_config):
-        with pytest.raises(IOError):
-            sloth = initialize_player(load_bad_config, False)</code></pre>
+    &#34;&#34;&#34;Checks that initialize_player raises IOError on a bad config&#34;&#34;&#34;
+    with pytest.raises(IOError):
+        sloth = initialize_player(load_bad_config, False)</code></pre>
 </details>
 </dd>
 <dt id="tests.test_slothplayer.test_initialize_player_good"><code class="name flex">
 <span>def <span class="ident">test_initialize_player_good</span></span>(<span>load_good_config)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Checks that initialize_player works on a good config</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_initialize_player_good(load_good_config):
+    &#34;&#34;&#34;Checks that initialize_player works on a good config&#34;&#34;&#34;
     sloth = initialize_player(load_good_config, False)
     assert sloth.interval == [4,7]</code></pre>
 </details>
@@ -216,12 +237,13 @@ def load_good_config():
 <span>def <span class="ident">test_play_silence</span></span>(<span>load_good_config)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Checks that play_silence() is playing the correct duration of silence</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_play_silence(load_good_config):
+    &#34;&#34;&#34;Checks that play_silence() is playing the correct duration of silence&#34;&#34;&#34;
     slothplayer = SlothPlayer(load_good_config)
     slothplayer.loadconfig()
     actual_silence = play_silence(slothplayer, 0.03333) # 2 seconds
@@ -232,12 +254,13 @@ def load_good_config():
 <span>def <span class="ident">test_play_song_bad</span></span>(<span>load_good_config)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Checks that initialize_player returns false on a bad song</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_play_song_bad(load_good_config):
+    &#34;&#34;&#34;Checks that initialize_player returns false on a bad song&#34;&#34;&#34;
     slothplayer = SlothPlayer(load_good_config)
     slothplayer.loadconfig()
     result = play_song(slothplayer, &#34;https://www.youtube.com/watch?v=PCicKydXE&#34;)
@@ -248,12 +271,13 @@ def load_good_config():
 <span>def <span class="ident">test_play_song_good</span></span>(<span>load_good_config)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Plays a real youtube song and checks the duration played</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_play_song_good(load_good_config):
+    &#34;&#34;&#34;Plays a real youtube song and checks the duration played&#34;&#34;&#34;
     slothplayer = SlothPlayer(load_good_config)
     slothplayer.loadconfig()
     result = play_song(slothplayer, &#34;https://www.youtube.com/watch?v=PCicKydX5GE&#34;)
