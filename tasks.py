@@ -22,4 +22,11 @@ def doc(c, docs=False):
     c.run(r"pdoc --html -o docs --force tests")
 
 
+@task
+def push(c, message):
+    
+    c.run(r"git add *")
+    c.run(r"git commit -m {message}")
+    c.run(r"git push origin master")
+
     
