@@ -22,19 +22,19 @@ Then you need to edit the configuration file config.txt. The config file's forma
 
 And that is pretty much it!
 
-**localMusicFolders**: (path) local folders to be scanned
-**localMusicFoldersActive**: (true/false) activate or not the local mode
+**localMusicFolders**: (path) local folders to be scanned  
+**localMusicFoldersActive**: (true/false) activate or not the local mode  
 
-**youtubePlaylists**: (path) youtube playlists to be scanned
-**youtubePlaylistsActive**: (true/false) activate or not the youtube mode
+**youtubePlaylists**: (path) youtube playlists to be scanned  
+**youtubePlaylistsActive**: (true/false) activate or not the youtube mode  
 
-**consecutiveReadings**: (integer) number of songs to be read before silence
+**consecutiveReadings**: (integer) number of songs to be read before silence  
 
-**maxSongPlayTime**: (integer) max duration of a song in minutes before it is faded out and next song is played
+**maxSongPlayTime**: (integer) max duration of a song in minutes before it is faded out and next song is played  
 
-**fileTypes**: (file types) types of files to take into account
+**fileTypes**: (file types) types of files to take into account  
 
-**interval**: (integers) min and max number of minutes of silence between 2 tracks (the application with choose a random number between the lower and upper limits)
+**interval**: (integers) min and max number of minutes of silence between 2 tracks (the application with choose a random number between the lower and upper limits)  
 
 **Example:** 
 
