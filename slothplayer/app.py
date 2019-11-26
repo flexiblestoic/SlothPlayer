@@ -66,7 +66,7 @@ def initialize_player(config_file, auto_open=True):
  |_____/|_|\___/ \__|_| |_| |_|    |_|\__,_|\__, |\___|_|   
                                              __/ |          
                                             |___/                          
- v1
+ v1.0-beta
     ''', "green")
 
 

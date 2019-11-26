@@ -75,3 +75,6 @@ The code is a python code which is compatible with multiple platforms. However, 
 
 ## Credits
 logo: http://pngimg.com/download/71212
+
+## Disclaimer of Warranties and Limitation of Liability
+Software provided as is, no warranty. Please review the license.
