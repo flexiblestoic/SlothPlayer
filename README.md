@@ -18,7 +18,7 @@ Supported formats: all formats supported by vlc (incl. mp3, aac, flac, wma)
 ## How does it work?
 First download the program on the Github release page:  https://github.com/flexiblestoic/SlothPlayer/releases
 
-Then you need to edit the configuration file config.txt. The config file's format is hjson https://hjson.org/ which is slightly different than json (more readable). In particular comments are allowed `#` and end of line commas are not compulsory. Hence, `#` can be conveniently used to write reminders in the configuration file or temporarily remove a line/playlist. 
+Then you need to edit the configuration file config.txt which can be found at the root of the program. But the easier way to access it is to press "c" after starting the program (please save the config file, close and press "r" in the program after edition the configuration). The config file's format is hjson https://hjson.org/ which is slightly different than json (more readable). In particular comments are allowed `#` and end of line commas are not compulsory. Hence, `#` can be conveniently used to write reminders in the configuration file or temporarily remove a line/playlist. 
 
 And that is pretty much it!
 
